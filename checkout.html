@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Quirkzy — Checkout</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- =========================================
+         CHECKOUT PAGE
+    ========================================== -->
+
+    <main class="checkout-page">
+
+        <!-- =========================================
+             CHECKOUT HEADER
+        ========================================== -->
+
+        <header class="checkout-header">
+
+            <a
+                href="index.html"
+                class="checkout-logo"
+            >
+                QUIRKZY
+            </a>
+
+            <a
+                href="cart.html"
+                class="checkout-back"
+            >
+                ← Back to Bag
+            </a>
+
+        </header>
+
+
+        <!-- =========================================
+             CHECKOUT CONTENT
+        ========================================== -->
+
+        <section class="checkout-container">
+
+
+            <!-- =========================================
+                 CHECKOUT FORM
+            ========================================== -->
+
+            <div class="checkout-main">
+
+                <p class="checkout-label">
+                    ALMOST YOURS ✦
+                </p>
+
+                <h1>
+                    Let's get your quirk home.
+                </h1>
+
+                <p class="checkout-subtitle">
+                    Just a few details and your wonderfully
+                    weird order will be on its way.
+                </p>
+
+
+                <!-- =========================================
+                     DELIVERY DETAILS
+                ========================================== -->
+
+                <div class="checkout-section">
+
+                    <h2>
+                        Delivery details
+                    </h2>
+
+                    <div class="checkout-form">
+
+
+                        <!-- Full Name -->
+
+                        <div class="form-group">
+
+                            <label for="checkout-name">
+                                Full name
+                            </label>
+
+                            <input
+                                type="text"
+                                id="checkout-name"
+                                placeholder="Your name"
+                                required
+                            >
+
+                        </div>
+
+
+                        <!-- Email -->
+
+                        <div class="form-group">
+
+                            <label for="checkout-email">
+                                Email
+                            </label>
+
+                            <input
+                                type="email"
+                                id="checkout-email"
+                                placeholder="you@example.com"
+                                required
+                            >
+
+                            <small
+                                class="field-error"
+                                id="checkout-email-error"
+                            ></small>
+
+                        </div>
+
+
+                        <!-- Phone -->
+
+                        <div class="form-group">
+
+                            <label for="checkout-phone">
+                                Phone number
+                            </label>
+
+                            <input
+                                type="tel"
+                                id="checkout-phone"
+                                placeholder="Your phone number"
+                                inputmode="numeric"
+                                maxlength="10"
+                                required
+                            >
+
+                            <small
+                                class="field-error"
+                                id="checkout-phone-error"
+                            ></small>
+
+                        </div>
+
+
+                        <!-- Address -->
+
+                        <div class="form-group">
+
+                            <label for="checkout-address">
+                                Address
+                            </label>
+
+                            <textarea
+                                id="checkout-address"
+                                placeholder="House / Flat number, street, area"
+                                rows="3"
+                                required
+                            ></textarea>
+
+                        </div>
+
+
+                        <!-- City + PIN -->
+
+                        <div class="checkout-form-row">
+
+                            <div class="form-group">
+
+                                <label for="checkout-city">
+                                    City
+                                </label>
+
+                                <input
+                                    type="text"
+                                    id="checkout-city"
+                                    placeholder="City"
+                                    required
+                                >
+
+                            </div>
+
+
+                            <div class="form-group">
+
+                                <label for="checkout-pincode">
+                                    PIN code
+                                </label>
+
+                                <input
+                                    type="text"
+                                    id="checkout-pincode"
+                                    placeholder="PIN code"
+                                    inputmode="numeric"
+                                    maxlength="6"
+                                    required
+                                >
+
+                                <small
+                                    class="field-error"
+                                    id="checkout-pincode-error"
+                                ></small>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =========================================
+                     PAYMENT
+                ========================================== -->
+
+                <div class="checkout-section">
+
+                    <h2>
+                        Payment
+                    </h2>
+
+                    <div class="payment-options">
+
+
+                        <!-- Cash / Demo Payment -->
+
+                        <label class="payment-option">
+
+                            <input
+                                type="radio"
+                                name="payment"
+                                value="cod"
+                                checked
+                            >
+
+                            <span>
+
+                                <strong>
+                                    Cash on Delivery
+                                </strong>
+
+                                <small>
+                                    Pay when your wonderfully
+                                    weird package arrives.
+                                </small>
+
+                            </span>
+
+                        </label>
+
+
+                        <!-- Online Payment -->
+
+                        <label class="payment-option">
+
+                            <input
+                                type="radio"
+                                name="payment"
+                                value="online"
+                            >
+
+                            <span>
+
+                                <strong>
+                                    Online Payment
+                                </strong>
+
+                                <small>
+                                    UPI, cards and other
+                                    online payment methods.
+                                </small>
+
+                            </span>
+
+                        </label>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =========================================
+                     PLACE ORDER
+                ========================================== -->
+
+                <button
+                    id="place-order-button"
+                    class="place-order-button"
+                    type="button"
+                >
+                    Place My Order
+                </button>
+
+                <p class="checkout-note">
+                    Your details are used only to process
+                    this demo order.
+                </p>
+
+            </div>
+
+
+            <!-- =========================================
+                 ORDER SUMMARY
+            ========================================== -->
+
+            <aside class="checkout-summary">
+
+                <p class="summary-label">
+                    YOUR QUIRKS
+                </p>
+
+
+                <!-- Checkout Products -->
+
+                <div id="checkout-items">
+
+                    <!-- Products will be added by JavaScript -->
+
+                </div>
+
+
+                <!-- Divider -->
+
+                <div class="checkout-summary-divider"></div>
+
+
+                <!-- Subtotal -->
+
+                <div class="summary-row">
+
+                    <span>
+                        Subtotal
+                    </span>
+
+                    <span class="checkout-subtotal">
+                        ₹0
+                    </span>
+
+                </div>
+
+
+                <!-- Shipping -->
+
+                <div class="summary-row">
+
+                    <span>
+                        Shipping
+                    </span>
+
+                    <span class="checkout-shipping">
+                        ₹50
+                    </span>
+
+                </div>
+
+
+                <!-- Total -->
+
+                <div class="summary-total">
+
+                    <span>
+                        Total
+                    </span>
+
+                    <strong class="checkout-total">
+                        ₹50
+                    </strong>
+
+                </div>
+
+            </aside>
+
+        </section>
+
+    </main>
+
+
+    <!-- =========================================
+         ORDER SUCCESS MODAL
+    ========================================== -->
+
+    <div
+        id="order-success"
+        class="order-success"
+    >
+
+        <div class="order-success-box">
+
+            <div class="success-icon">
+                ✓
+            </div>
+
+            <h2>
+                Your quirk is on its way! ♡
+            </h2>
+
+            <p>
+                Your order has been placed successfully.
+                We hope it brings a little more weird
+                and wonderful into your day.
+            </p>
+
+            <a href="index.html">
+                Back to Quirkzy
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <!-- JAVASCRIPT -->
+
+    <script src="script.js"></script>
+
+</body>
+
+</html>

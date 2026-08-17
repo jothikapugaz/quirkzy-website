@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Quirkzy — Weird & Wonderful</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- =========================================
+         HEADER / NAVIGATION
+    ========================================== -->
+
+    <header>
+        <nav>
+
+            <div class="nav-top">
+
+                <a href="#" class="logo">QUIRKZY</a>
+
+                <div class="nav-icons">
+
+                    <!-- Wishlist -->
+                    <a
+                        href="wishlist.html"
+                        class="nav-icon"
+                        aria-label="Wishlist"
+                    >
+                        <svg viewBox="0 0 24 24">
+                            <path d="M20.8 8.8c0 5.5-8.8 10.2-8.8 10.2S3.2 14.3 3.2 8.8C3.2 5.7 5.4 3.5 8.2 3.5c1.7 0 3.1.8 4 2.1.9-1.3 2.3-2.1 4-2.1 2.8 0 4.6 2.2 4.6 5.3z"/>
+                        </svg>
+                    </a>
+
+                    <!-- Account / Login -->
+                    <a
+                        href="login.html"
+                        class="nav-icon"
+                        aria-label="Account"
+                    >
+                        <svg viewBox="0 0 24 24">
+                            <circle cx="12" cy="8" r="3.5"/>
+                            <path d="M5 20c.8-3.5 3.1-5.5 7-5.5s6.2 2 7 5.5"/>
+                        </svg>
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            <div class="nav-bottom">
+
+                <div class="nav-links">
+                    <a href="#shop">Shop</a>
+                    <a href="#story">Our Story</a>
+                    <a href="#custom">Custom</a>
+                </div>
+
+                <button
+                    class="cart-button"
+                    onclick="window.location.href='cart.html'"
+                >
+                    ♡ Bag
+                </button>
+
+            </div>
+
+        </nav>
+    </header>
+
+
+    <!-- =========================================
+         MAIN CONTENT
+    ========================================== -->
+
+    <main>
+
+        <!-- HERO -->
+
+        <section class="hero">
+
+            <p>✦ Weird & Wonderful</p>
+
+            <h1>
+                Make your space
+                <br>
+                more <em>you</em>
+            </h1>
+
+            <p>
+                Quirky little things made to bring
+                personality into your everyday space.
+            </p>
+
+            <a href="#shop">
+                Find your quirk →
+            </a>
+
+            <img
+                src="assets/Quirkzy-hello.png"
+                alt="Quirkzy Hello"
+            >
+
+        </section>
+
+
+        <!-- =========================================
+             SHOP
+        ========================================== -->
+
+        <section id="shop">
+
+            <p>tiny things, big personality ✦</p>
+
+            <h2>Find your quirk.</h2>
+
+
+            <!-- CATEGORY FILTERS -->
+
+            <div class="category-buttons">
+
+                <button
+                    class="category-btn active"
+                    data-category="all"
+                >
+                    ALL PRODUCTS
+                </button>
+
+                <button
+                    class="category-btn"
+                    data-category="plant-pals"
+                >
+                    PLANT PALS
+                </button>
+
+                <button
+                    class="category-btn"
+                    data-category="desk-office"
+                >
+                    DESK &amp; OFFICE
+                </button>
+
+                <button
+                    class="category-btn"
+                    data-category="home-decor"
+                >
+                    HOME DECOR
+                </button>
+
+            </div>
+
+
+            <!-- PRODUCT GRID -->
+
+            <div class="product-grid">
+
+                <!-- UFO Planter -->
+
+                <article
+                    class="product-card"
+                    data-category="plant-pals"
+                >
+
+                    <img
+                        src="assets/Quirkzy-ufoplanter.jpg"
+                        alt="Quirkzy UFO planter"
+                    >
+
+                    <div class="product-info">
+
+                        <h3>UFO Planter</h3>
+
+                        <span>₹699</span>
+
+                        <button>
+                            Add to bag +
+                        </button>
+
+                    </div>
+
+                </article>
+
+
+                <!-- Desk Organizer -->
+
+                <article
+                    class="product-card"
+                    data-category="desk-office"
+                >
+
+                    <img
+                        src="assets/Quirkzy-organizer.png"
+                        alt="Quirkzy desk organizer"
+                    >
+
+                    <div class="product-info">
+
+                        <h3>Desk Organizer</h3>
+
+                        <span>₹499</span>
+
+                        <button>
+                            Add to bag +
+                        </button>
+
+                    </div>
+
+                </article>
+
+
+                <!-- Potter Pen Holder -->
+
+                <article
+                    class="product-card"
+                    data-category="desk-office"
+                >
+
+                    <img
+                        src="assets/Quirkzy-potterpenholder.png"
+                        alt="Quirkzy castle pen holder"
+                    >
+
+                    <div class="product-info">
+
+                        <h3>Potter Pen Holder</h3>
+
+                        <span>₹999</span>
+
+                        <button>
+                            Add to bag +
+                        </button>
+
+                    </div>
+
+                </article>
+
+
+                <!-- Mushroom Lamp -->
+
+                <article
+                    class="product-card"
+                    data-category="home-decor"
+                >
+
+                    <img
+                        src="assets/Quirkzy-mushroomlamp.png"
+                        alt="Quirkzy mushroom lamp"
+                    >
+
+                    <div class="product-info">
+
+                        <h3>Mushroom Lamp</h3>
+
+                        <span>₹899</span>
+
+                        <button>
+                            Add to bag +
+                        </button>
+
+                    </div>
+
+                </article>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================================
+             OUR STORY
+        ========================================== -->
+
+        <section id="story">
+
+            <p class="story-label">
+                designed ♡ printed ♡ made with love
+            </p>
+
+            <h2>
+                We're here to make
+                <em>boring corners</em> disappear.
+            </h2>
+
+            <p class="story-text">
+                We turn ideas into playful objects,
+                one layer at a time.
+            </p>
+
+        </section>
+
+
+        <!-- =========================================
+             CUSTOM
+        ========================================== -->
+
+        <section id="custom">
+
+            <div class="custom-card">
+
+                <p class="custom-label">
+                    GOT SOMETHING WEIRD IN MIND? ✦
+                </p>
+
+                <h2>
+                    Got a wonderfully
+                    <em>weird idea?</em>
+                </h2>
+
+                <p class="custom-text">
+                    You imagine it.
+                    <br>
+                    We make it.
+                </p>
+
+                <button id="custom-idea-button">
+                    Start a custom idea →
+                </button>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- =========================================
+         FOOTER
+    ========================================== -->
+
+    <footer>
+
+        <p>QUIRKZY ♡</p>
+
+        <p>Weird &amp; Wonderful.</p>
+
+    </footer>
+
+
+    <!-- =========================================
+         TOAST NOTIFICATION
+    ========================================== -->
+
+    <div
+        id="toast"
+        class="toast"
+    >
+        ✓ Product added to your bag! ♡
+    </div>
+
+
+    <!-- =========================================
+         LOGIN MODAL
+    ========================================== -->
+
+    <div
+        id="login-modal"
+        class="login-modal"
+    >
+
+        <div class="login-box">
+
+            <button
+                id="close-login"
+                class="close-login"
+            >
+                ×
+            </button>
+
+            <p class="login-label">
+                WELCOME TO QUIRKZY
+            </p>
+
+            <h2>
+                One tiny step before the quirk. ♡
+            </h2>
+
+            <p>
+                Log in to add things to your bag,
+                place orders, and share your thoughts.
+            </p>
+
+            <input
+                type="text"
+                id="login-name"
+                placeholder="Your name"
+            >
+
+            <input
+                type="email"
+                id="login-email"
+                placeholder="Your email"
+            >
+
+            <button id="login-button">
+                Continue →
+            </button>
+
+            <p class="login-note">
+                Demo login for now — real authentication comes later.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <!-- JAVASCRIPT -->
+
+    <script src="script.js"></script>
+
+</body>
+
+</html>

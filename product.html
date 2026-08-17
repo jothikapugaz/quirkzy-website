@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Quirkzy — Product</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- =========================================
+         PRODUCT PAGE
+    ========================================== -->
+
+    <main>
+
+        <!-- =========================================
+             PRODUCT PAGE HEADER
+        ========================================== -->
+
+        <div class="product-page-header">
+
+            <!-- Back -->
+            <a
+                href="index.html"
+                class="product-back-button"
+                aria-label="Back to home"
+            >
+                ←
+            </a>
+
+
+            <!-- Header Actions -->
+
+            <div class="product-header-actions">
+
+                <!-- Wishlist -->
+
+                <button
+                    id="product-wishlist-button"
+                    class="product-wishlist-button"
+                    aria-label="Add to wishlist"
+                    aria-pressed="false"
+                >
+
+                    <svg
+                        viewBox="0 0 24 24"
+                        aria-hidden="true"
+                    >
+                        <path
+                            d="M20.8 8.7
+                               C20.8 5.9 18.7 4 16.1 4
+                               C14.6 4 13.2 4.7 12 6
+                               C10.8 4.7 9.4 4 7.9 4
+                               C5.3 4 3.2 5.9 3.2 8.7
+                               C3.2 13.2 7.2 16.1 12 20
+                               C16.8 16.1 20.8 13.2 20.8 8.7Z"
+                        />
+                    </svg>
+
+                </button>
+
+
+                <!-- Bag -->
+
+                <a
+                    href="cart.html"
+                    class="product-cart-button"
+                    aria-label="Open bag"
+                >
+
+                    <svg
+                        viewBox="0 0 24 24"
+                        aria-hidden="true"
+                    >
+                        <path
+                            d="M6 8h12l1 13H5L6 8zm3 0V6a3 3 0 0 1 6 0v2"
+                        />
+                    </svg>
+
+                    <span id="product-cart-count">
+                        0
+                    </span>
+
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <!-- =========================================
+             PRODUCT DETAILS
+        ========================================== -->
+
+        <section class="product-page">
+
+            <!-- Product Image -->
+
+            <div class="product-page-image">
+
+                <img
+                    id="product-image"
+                    src=""
+                    alt=""
+                >
+
+            </div>
+
+
+            <!-- Product Information -->
+
+            <div class="product-page-details">
+
+                <p
+                    id="product-category"
+                    class="product-category"
+                ></p>
+
+
+                <h1 id="product-name"></h1>
+
+
+                <!-- Rating -->
+
+                <div class="product-rating">
+
+                    <span id="product-stars">
+                        ★★★★★
+                    </span>
+
+                    <span id="product-review-count">
+                        (0 reviews)
+                    </span>
+
+                </div>
+
+
+                <!-- Price -->
+
+                <p
+                    id="product-price"
+                    class="product-price"
+                ></p>
+
+
+                <!-- Description -->
+
+                <p
+                    id="product-description"
+                    class="product-description"
+                ></p>
+
+
+                <!-- Product Actions -->
+
+                <div class="product-actions">
+
+                    <button id="add-to-bag">
+                        Add to Bag ♡
+                    </button>
+
+                    <button id="order-now">
+                        Order Now →
+                    </button>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================================
+             PRODUCT SPECIFICATIONS
+        ========================================== -->
+
+        <section class="product-specifications">
+
+            <h2>
+                Product Details
+            </h2>
+
+
+            <div class="specification-table">
+
+                <div class="specification-row">
+
+                    <div class="specification-label">
+                        Dimensions
+                    </div>
+
+                    <div
+                        class="specification-value"
+                        id="product-dimensions"
+                    ></div>
+
+                </div>
+
+
+                <div class="specification-row">
+
+                    <div class="specification-label">
+                        Material
+                    </div>
+
+                    <div
+                        class="specification-value"
+                        id="product-material"
+                    ></div>
+
+                </div>
+
+
+                <div class="specification-row">
+
+                    <div class="specification-label">
+                        Weight
+                    </div>
+
+                    <div
+                        class="specification-value"
+                        id="product-weight"
+                    ></div>
+
+                </div>
+
+
+                <div class="specification-row">
+
+                    <div class="specification-label">
+                        Features
+                    </div>
+
+                    <div
+                        class="specification-value"
+                        id="product-features"
+                    ></div>
+
+                </div>
+
+
+                <div class="specification-row">
+
+                    <div class="specification-label">
+                        Colour
+                    </div>
+
+                    <div
+                        class="specification-value"
+                        id="product-color"
+                    ></div>
+
+                </div>
+
+
+                <div class="specification-row">
+
+                    <div class="specification-label">
+                        Care
+                    </div>
+
+                    <div
+                        class="specification-value"
+                        id="product-care"
+                    ></div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================================
+             REVIEWS
+        ========================================== -->
+
+        <section class="reviews-section">
+
+            <h2>
+                What people think ♡
+            </h2>
+
+
+            <!-- Rating Summary -->
+
+            <div class="rating-summary">
+
+                <strong id="average-rating">
+                    0.0
+                </strong>
+
+                <div>
+
+                    <div class="stars">
+                        ★★★★★
+                    </div>
+
+                    <p id="rating-count">
+                        No reviews yet
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- Review Form -->
+
+            <div class="review-form">
+
+                <h3>
+                    Have this quirk?
+                </h3>
+
+                <p>
+                    Tell everyone what you think.
+                </p>
+
+
+                <!-- Star Selection -->
+
+                <div
+                    class="star-input"
+                    id="star-input"
+                >
+
+                    <button data-rating="1">
+                        ★
+                    </button>
+
+                    <button data-rating="2">
+                        ★
+                    </button>
+
+                    <button data-rating="3">
+                        ★
+                    </button>
+
+                    <button data-rating="4">
+                        ★
+                    </button>
+
+                    <button data-rating="5">
+                        ★
+                    </button>
+
+                </div>
+
+
+                <!-- Review Text -->
+
+                <textarea
+                    id="review-text"
+                    placeholder="Write your comment..."
+                    rows="4"
+                ></textarea>
+
+
+                <button id="submit-review">
+                    Post Review
+                </button>
+
+            </div>
+
+
+            <!-- Existing Reviews -->
+
+            <div id="reviews-list">
+
+                <!-- Reviews will be added by JavaScript -->
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================================
+             SIMILAR PRODUCTS
+        ========================================== -->
+
+        <section class="similar-products">
+
+            <h2>
+                You might also like ✨
+            </h2>
+
+            <div
+                id="similar-products-grid"
+                class="product-grid"
+            >
+
+                <!-- Similar products will be added by JavaScript -->
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- =========================================
+         LOGIN MODAL
+    ========================================== -->
+
+    <div
+        id="login-modal"
+        class="login-modal"
+    >
+
+        <div class="login-box">
+
+            <button
+                id="close-login"
+                class="close-login"
+                aria-label="Close login"
+            >
+                ×
+            </button>
+
+            <p class="login-label">
+                WELCOME TO QUIRKZY
+            </p>
+
+            <h2>
+                One tiny step before the quirk. ♡
+            </h2>
+
+            <p>
+                Log in to add things to your bag,
+                place orders, and share your thoughts.
+            </p>
+
+            <input
+                type="text"
+                id="login-name"
+                placeholder="Your name"
+            >
+
+            <input
+                type="email"
+                id="login-email"
+                placeholder="Your email"
+            >
+
+            <button id="login-button">
+                Continue →
+            </button>
+
+            <p class="login-note">
+                Demo login for now — real authentication comes later.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <!-- JAVASCRIPT -->
+
+    <script src="script.js"></script>
+
+</body>
+
+</html>

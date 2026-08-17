@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Quirkzy — Your Bag</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- =========================================
+         CART PAGE
+    ========================================== -->
+
+    <main>
+
+        <!-- CART HEADING -->
+
+        <div class="cart-heading">
+
+            <div class="cart-title">
+
+                <img
+                    src="assets/quirkzy-cart.png"
+                    alt="Quirkzy"
+                >
+
+                <h1>Quirkzy Bag</h1>
+
+            </div>
+
+            <p>
+                Your wonderfully hand-picked little quirks ♡
+            </p>
+
+        </div>
+
+
+        <!-- CART PRODUCTS -->
+
+        <div id="cart-items"></div>
+
+
+        <!-- CART SUMMARY -->
+
+        <div id="cart-summary"></div>
+
+    </main>
+
+
+    <!-- =========================================
+         LOGIN MODAL
+    ========================================== -->
+
+    <div
+        id="login-modal"
+        class="login-modal"
+    >
+
+        <div class="login-box">
+
+            <button
+                id="close-login"
+                class="close-login"
+            >
+                ×
+            </button>
+
+            <p class="login-label">
+                WELCOME TO QUIRKZY
+            </p>
+
+            <h2>
+                One tiny step before the quirk. ♡
+            </h2>
+
+            <p>
+                Log in to add things to your bag,
+                place orders, and share your thoughts.
+            </p>
+
+            <input
+                type="text"
+                id="login-name"
+                placeholder="Your name"
+            >
+
+            <input
+                type="email"
+                id="login-email"
+                placeholder="Your email"
+            >
+
+            <button id="login-button">
+                Continue →
+            </button>
+
+            <p class="login-note">
+                Demo login for now — real authentication comes later.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <!-- JAVASCRIPT -->
+
+    <script src="script.js"></script>
+
+</body>
+
+</html>

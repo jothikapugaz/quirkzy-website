@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Quirkzy — Wishlist</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- =========================================
+         WISHLIST PAGE
+    ========================================== -->
+
+    <main>
+
+        <!-- =========================================
+             PAGE HEADER
+        ========================================== -->
+
+        <div class="product-page-header">
+
+            <!-- Back -->
+
+            <a
+                href="index.html"
+                class="product-back-button"
+                aria-label="Back to home"
+            >
+                ←
+            </a>
+
+
+            <!-- Bag -->
+
+            <a
+                href="cart.html"
+                class="product-cart-button"
+                aria-label="Open bag"
+            >
+
+                <svg
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                >
+                    <path
+                        d="M6 8h12l1 13H5L6 8zm3 0V6a3 3 0 0 1 6 0v2"
+                    />
+                </svg>
+
+                <span id="product-cart-count">
+                    0
+                </span>
+
+            </a>
+
+        </div>
+
+
+        <!-- =========================================
+             WISHLIST INTRO
+        ========================================== -->
+
+        <section class="wishlist-heading">
+
+            <p class="wishlist-label">
+                YOUR LITTLE COLLECTION
+            </p>
+
+            <h1>
+                Things you <em>love</em> ♡
+            </h1>
+
+            <p>
+                The quirks you couldn't resist.
+            </p>
+
+        </section>
+
+
+        <!-- =========================================
+             WISHLIST PRODUCTS
+        ========================================== -->
+
+        <section class="wishlist-section">
+
+            <div
+                id="wishlist-grid"
+                class="product-grid"
+            >
+
+                <!-- Wishlist products will be added by JavaScript -->
+
+            </div>
+
+
+            <!-- =========================================
+                 EMPTY WISHLIST
+            ========================================== -->
+
+            <div
+                id="empty-wishlist"
+                class="empty-wishlist"
+            >
+
+                <div class="empty-wishlist-heart">
+                    ♡
+                </div>
+
+                <h2>
+                    Your wishlist is feeling a little lonely.
+                </h2>
+
+                <p>
+                    Find something wonderfully weird
+                    and give it a little heart.
+                </p>
+
+                <a href="index.html">
+                    Find your quirks →
+                </a>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- JAVASCRIPT -->
+
+    <script src="script.js"></script>
+
+</body>
+
+</html>
