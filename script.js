@@ -3121,19 +3121,19 @@ if (checkoutItemsContainer) {
 
         const subtotalElement =
             document.querySelector(
-                "#checkout-subtotal"
+                ".checkout-subtotal"
             );
 
 
         const shippingElement =
             document.querySelector(
-                "#checkout-shipping"
+                ".checkout-shipping"
             );
 
 
         const totalElement =
             document.querySelector(
-                "#checkout-total"
+                ".checkout-total"
             );
 
 
@@ -3167,7 +3167,7 @@ if (checkoutItemsContainer) {
 
     const placeOrderButton =
         document.querySelector(
-            "#place-order"
+            "#place-order-button"
         );
 
 
