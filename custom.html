@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Create something wonderfully weird with Quirkzy." />
+    <title>Quirkzy — Custom Idea</title>
+    <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+
+    <main class="custom-page">
+
+        <!-- ===== PAGE HEADER ===== -->
+        <header class="custom-page-header">
+            <a href="index.html" class="custom-logo">Quirkzy</a>
+            <a href="index.html#custom" class="custom-back">← Back</a>
+        </header>
+
+        <!-- ===== INTRO ===== -->
+        <section class="custom-intro">
+            <p class="custom-page-label">✦ MAKE SOMETHING WEIRD</p>
+            <h1>Tell us about your <em>idea.</em></h1>
+            <p>
+                Have something in mind that you can't find
+                in our shop? Tell us what you're imagining.
+                We'll take a look and figure out how to bring
+                it to life.
+            </p>
+        </section>
+
+        <!-- ===== CUSTOM REQUEST FORM ===== -->
+        <section class="custom-form-section">
+
+            <form id="custom-request-form" novalidate>
+
+                <!-- ---- 01. ABOUT YOU ---- -->
+                <div class="custom-form-card">
+
+                    <div class="custom-form-heading">
+                        <span>01</span>
+                        <div>
+                            <h2>About you</h2>
+                            <p>So we know who we're making your quirk for.</p>
+                        </div>
+                    </div>
+
+                    <div class="custom-form-grid">
+
+                        <!-- Name -->
+                        <div class="custom-field">
+                            <label for="custom-name">Name *</label>
+                            <input type="text" id="custom-name" name="name"
+                            placeholder="Your name" autocomplete="off" required />
+                            <small class="custom-error" id="custom-name-error"></small>
+                        </div>
+
+                        <!-- Email -->
+                        <div class="custom-field">
+                            <label for="custom-email">Email *</label>
+                            <input type="email" id="custom-email" name="email"
+                            placeholder="you@example.com" autocomplete="off" required />
+                            <small class="custom-error" id="custom-email-error"></small>
+                        </div>
+
+                        <!-- Phone -->
+                        <div class="custom-field">
+                            <label for="custom-phone">Phone number *</label>
+                            <input type="tel" id="custom-phone" name="phone"
+                            placeholder="10-digit mobile number" inputmode="numeric"
+                            autocomplete="off" required />
+                            <small class="custom-error" id="custom-phone-error"></small>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!-- ---- 02. YOUR IDEA ---- -->
+                <div class="custom-form-card">
+
+                    <div class="custom-form-heading">
+                        <span>02</span>
+                        <div>
+                            <h2>Your idea</h2>
+                            <p>This is the fun part. Tell us what you've imagined.</p>
+                        </div>
+                    </div>
+
+                    <!-- Title -->
+                    <div class="custom-field">
+                        <label for="custom-title">Give your idea a name *</label>
+                        <input type="text" id="custom-title" name="title"
+                        placeholder="Example: Tiny dragon desk buddy" maxlength="80" required />
+                        <small class="custom-error" id="custom-title-error"></small>
+                    </div>
+
+                    <!-- Description -->
+                    <div class="custom-field">
+                        <label for="custom-description">Describe it *</label>
+                        <textarea id="custom-description" name="description"
+                        rows="6" maxlength="1000"
+                        placeholder="Tell us what you want, how you imagine it looking, what it should do, or anything else that might help us understand your idea..."
+                    required></textarea>
+                    <small class="custom-error" id="custom-description-error"></small>
+                    <div class="custom-character-count">
+                        <span id="custom-description-count">0</span> / 1000
+                    </div>
+                </div>
+
+                <!-- Category -->
+                <div class="custom-field">
+                    <label>What kind of thing is it? *</label>
+                    <div class="custom-options">
+                        <label class="custom-option">
+                            <input type="radio" name="category" value="Home Decor" />
+                            <span>🏠 Home Decor</span>
+                        </label>
+                        <label class="custom-option">
+                            <input type="radio" name="category" value="Desk & Office" />
+                            <span>🖥 Desk & Office</span>
+                        </label>
+                        <label class="custom-option">
+                            <input type="radio" name="category" value="Gift" />
+                            <span>🎁 Gift</span>
+                        </label>
+                        <label class="custom-option">
+                            <input type="radio" name="category" value="Something Else" />
+                            <span>✦ Something Else</span>
+                        </label>
+                    </div>
+                    <small class="custom-error" id="custom-category-error"></small>
+                </div>
+
+            </div>
+
+            <!-- ---- 03. THE LITTLE DETAILS ---- -->
+            <div class="custom-form-card">
+
+                <div class="custom-form-heading">
+                    <span>03</span>
+                    <div>
+                        <h2>The little details</h2>
+                        <p>Don't worry if you don't know everything. Give us what you can.</p>
+                    </div>
+                </div>
+
+                <div class="custom-form-grid">
+
+                    <!-- Colour -->
+                    <div class="custom-field">
+                        <label for="custom-colour">Preferred colour</label>
+                        <input type="text" id="custom-colour" name="colour"
+                        placeholder="Black, pastel pink, etc." />
+                    </div>
+
+                    <!-- Size -->
+                    <div class="custom-field">
+                        <label for="custom-size">Approximate size</label>
+                        <input type="text" id="custom-size" name="size"
+                        placeholder="Example: 10 × 8 cm" />
+                    </div>
+
+                    <!-- Quantity -->
+                    <div class="custom-field">
+                        <label for="custom-quantity">Quantity</label>
+                        <input type="number" id="custom-quantity" name="quantity"
+                        min="1" max="100" value="1" />
+                        <small class="custom-error" id="custom-quantity-error"></small>
+                    </div>
+
+                    <!-- Budget -->
+                    <div class="custom-field">
+                        <label for="custom-budget">Approximate budget</label>
+                        <select id="custom-budget" name="budget">
+                            <option value="">Select a range</option>
+                            <option value="Under ₹500">Under ₹500</option>
+                            <option value="₹500 – ₹1000">₹500 – ₹1000</option>
+                            <option value="₹1000 – ₹2000">₹1000 – ₹2000</option>
+                            <option value="₹2000 – ₹5000">₹2000 – ₹5000</option>
+                            <option value="₹5000+">₹5000+</option>
+                            <option value="Not sure yet">Not sure yet</option>
+                        </select>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- ---- 04. REFERENCE IMAGES ---- -->
+            <div class="custom-form-card">
+
+                <div class="custom-form-heading">
+                    <span>04</span>
+                    <div>
+                        <h2>Show us what you mean</h2>
+                        <p>Reference pictures can make your idea much easier to understand.</p>
+                    </div>
+                </div>
+
+                <div class="custom-upload">
+
+                    <input type="file" id="custom-images"
+                    accept="image/jpeg,image/png,image/webp" multiple hidden />
+
+                    <label for="custom-images" class="custom-upload-box">
+                        <span class="custom-upload-icon">＋</span>
+                        <strong>Add reference images</strong>
+                        <small>JPG, PNG or WebP · Up to 3 images</small>
+                    </label>
+
+                    <div id="custom-image-preview" class="custom-image-preview"></div>
+
+                    <small class="custom-error" id="custom-images-error"></small>
+
+                </div>
+
+            </div>
+
+            <!-- ---- 05. ADDITIONAL NOTES ---- -->
+            <div class="custom-form-card">
+
+                <div class="custom-form-heading">
+                    <span>05</span>
+                    <div>
+                        <h2>Anything else?</h2>
+                        <p>Add any extra details you'd like us to know.</p>
+                    </div>
+                </div>
+
+                <div class="custom-field">
+                    <label for="custom-notes">Additional notes</label>
+                    <textarea id="custom-notes" name="notes" rows="5"
+                    placeholder="Anything about the finish, inspiration, deadline, occasion, or special requirements..."></textarea>
+                </div>
+
+            </div>
+
+            <!-- ---- SUBMIT ---- -->
+            <div class="custom-submit-area">
+                <p>♡ We'll review your idea and get back to you with what we can make.</p>
+                <button type="submit" class="custom-submit-button">Send my idea →</button>
+                <small>No payment is required at this stage.</small>
+            </div>
+
+        </form>
+
+    </section>
+
+</main>
+
+<!-- ===== SUCCESS MESSAGE ===== -->
+<div id="custom-success" class="custom-success">
+    <div class="custom-success-box">
+        <div class="custom-success-icon">✦</div>
+        <p class="custom-page-label">IDEA RECEIVED ♡</p>
+        <h2>That's wonderfully weird.</h2>
+        <p>
+            We've saved your custom idea.
+            We'll take a look and figure out
+            what we can create for you.
+        </p>
+        <button type="button" id="custom-success-home">Back to Quirkzy →</button>
+    </div>
+</div>
+
+<script src="script.js"></script>
+
+</body>
+
+</html>
