@@ -548,6 +548,254 @@ updateBagCount();
 /* =========================================================
    5. HOME / SHOP PAGE
    ========================================================= */
+   
+
+/* ---------- Quirkzy catalog menu ---------- */
+
+const menuButton =
+    document.querySelector("#menu-button");
+
+const catalogMenu =
+    document.querySelector("#catalog-menu");
+
+const catalogOverlay =
+    document.querySelector("#catalog-overlay");
+
+const catalogClose =
+    document.querySelector("#catalog-close");
+
+const catalogShopToggle =
+    document.querySelector("#catalog-shop-toggle");
+
+const catalogSubmenu =
+    document.querySelector("#catalog-submenu");
+
+const catalogMenuLinks =
+    document.querySelectorAll("[data-menu-link]");
+
+const catalogCategories =
+    document.querySelectorAll("[data-menu-category]");
+
+
+/* ---------- Open menu ---------- */
+
+function openCatalogMenu() {
+
+    if (!catalogMenu || !catalogOverlay) {
+        return;
+    }
+
+    catalogMenu.classList.add("show");
+    catalogOverlay.classList.add("show");
+
+    catalogMenu.setAttribute(
+        "aria-hidden",
+        "false"
+    );
+
+    if (menuButton) {
+        menuButton.setAttribute(
+            "aria-expanded",
+            "true"
+        );
+    }
+
+    document.body.style.overflow = "hidden";
+}
+
+
+/* ---------- Close menu ---------- */
+
+function closeCatalogMenu() {
+
+    if (!catalogMenu || !catalogOverlay) {
+        return;
+    }
+
+    catalogMenu.classList.remove("show");
+    catalogOverlay.classList.remove("show");
+
+    catalogMenu.setAttribute(
+        "aria-hidden",
+        "true"
+    );
+
+    if (menuButton) {
+        menuButton.setAttribute(
+            "aria-expanded",
+            "false"
+        );
+    }
+
+    document.body.style.overflow = "";
+
+    closeShopDropdown();
+}
+
+
+/* ---------- Open / close Shop ---------- */
+
+function closeShopDropdown() {
+
+    if (!catalogShopToggle || !catalogSubmenu) {
+        return;
+    }
+
+    catalogShopToggle.classList.remove("open");
+    catalogSubmenu.classList.remove("open");
+
+    catalogShopToggle.setAttribute(
+        "aria-expanded",
+        "false"
+    );
+}
+
+
+/* ---------- Hamburger ---------- */
+
+if (menuButton) {
+
+    menuButton.addEventListener(
+        "click",
+        openCatalogMenu
+    );
+
+}
+
+
+/* ---------- Close button ---------- */
+
+if (catalogClose) {
+
+    catalogClose.addEventListener(
+        "click",
+        closeCatalogMenu
+    );
+
+}
+
+
+/* ---------- Overlay ---------- */
+
+if (catalogOverlay) {
+
+    catalogOverlay.addEventListener(
+        "click",
+        closeCatalogMenu
+    );
+
+}
+
+
+/* ---------- Shop dropdown ---------- */
+
+if (
+    catalogShopToggle &&
+    catalogSubmenu
+) {
+
+    catalogShopToggle.addEventListener(
+        "click",
+        function () {
+
+            const isOpen =
+                catalogSubmenu.classList.contains(
+                    "open"
+                );
+
+            catalogShopToggle.classList.toggle(
+                "open",
+                !isOpen
+            );
+
+            catalogSubmenu.classList.toggle(
+                "open",
+                !isOpen
+            );
+
+            catalogShopToggle.setAttribute(
+                "aria-expanded",
+                String(!isOpen)
+            );
+
+        }
+    );
+
+}
+
+
+/* ---------- Normal menu links ---------- */
+
+catalogMenuLinks.forEach(
+    function (link) {
+
+        link.addEventListener(
+            "click",
+            closeCatalogMenu
+        );
+
+    }
+);
+
+
+/* ---------- Category navigation ---------- */
+
+catalogCategories.forEach(
+    function (button) {
+
+        button.addEventListener(
+            "click",
+            function () {
+
+                const category =
+                    button.dataset.menuCategory;
+
+                const matchingButton =
+                    document.querySelector(
+                        '.category-btn[data-category="' +
+                        category +
+                        '"]'
+                    );
+
+                if (matchingButton) {
+
+                    matchingButton.click();
+
+                }
+
+                const shopSection =
+                    document.querySelector("#shop");
+
+                if (shopSection) {
+
+                    shopSection.scrollIntoView({
+                        behavior: "smooth",
+                        block: "start"
+                    });
+
+                }
+
+                closeCatalogMenu();
+
+            }
+        );
+
+    }
+);
+
+
+/* ---------- Escape key ---------- */
+
+document.addEventListener(
+    "keydown",
+    function (event) {
+
+        if (event.key === "Escape") {
+            closeCatalogMenu();
+        }
+
+    }
+);
 
 
 /* ---------- Home product cards ---------- */
@@ -3632,10 +3880,7 @@ if (checkoutItemsContainer) {
    ========================================================= */
 
 const customIdeaButton =
-    document.querySelector(
-        "#custom-idea-button"
-    );
-
+    document.querySelector("#custom-idea-button");
 
 if (customIdeaButton) {
 
@@ -3644,20 +3889,532 @@ if (customIdeaButton) {
         function () {
 
             if (!isUserLoggedIn()) {
+                openLogin();
+                return;
+            }
+
+            window.location.href =
+                "custom.html";
+        }
+    );
+}
+
+
+/* =========================================================
+   CUSTOM REQUEST PAGE
+   ========================================================= */
+
+const customRequestForm =
+    document.querySelector("#custom-request-form");
+
+if (customRequestForm) {
+
+    const customName =
+        document.querySelector("#custom-name");
+
+    const customEmail =
+        document.querySelector("#custom-email");
+
+    const customPhone =
+        document.querySelector("#custom-phone");
+
+    const customDescription =
+        document.querySelector("#custom-description");
+
+    const customDescriptionCount =
+        document.querySelector("#custom-description-count");
+
+    const customImages =
+        document.querySelector("#custom-images");
+
+    const customImagePreview =
+        document.querySelector("#custom-image-preview");
+
+    const customSuccess =
+        document.querySelector("#custom-success");
+
+    const customSuccessHome =
+        document.querySelector("#custom-success-home");
+
+
+    /* ---------- Description counter ---------- */
+
+    if (customDescription) {
+
+        customDescription.addEventListener(
+            "input",
+            function () {
+
+                if (
+                    customDescription.value.length >
+                    1000
+                ) {
+                    customDescription.value =
+                        customDescription.value.slice(
+                            0,
+                            1000
+                        );
+                }
+
+                customDescriptionCount.textContent =
+                    customDescription.value.length;
+            }
+        );
+    }
+
+
+    /* ---------- Image handling ---------- */
+
+    let selectedImages = [];
+
+
+    function renderCustomImages() {
+
+        customImagePreview.innerHTML = "";
+
+        selectedImages.forEach(
+            function (image, index) {
+
+                const preview =
+                    document.createElement("div");
+
+                preview.classList.add(
+                    "custom-preview-item"
+                );
+
+                preview.innerHTML = `
+                    <img
+                        src="${image.preview}"
+                        alt="Custom idea reference"
+                    >
+
+                    <button
+                        type="button"
+                        class="custom-preview-remove"
+                        data-index="${index}"
+                        aria-label="Remove image"
+                    >
+                        ×
+                    </button>
+                `;
+
+                customImagePreview.appendChild(
+                    preview
+                );
+            }
+        );
+    }
+
+
+    if (customImages) {
+
+        customImages.addEventListener(
+            "change",
+            function () {
+
+                const files =
+                    Array.from(
+                        customImages.files
+                    );
+
+                if (
+                    selectedImages.length +
+                    files.length >
+                    3
+                ) {
+
+                    alert(
+                        "You can upload up to 3 reference images."
+                    );
+
+                    customImages.value = "";
+
+                    return;
+                }
+
+
+                files.forEach(
+                    function (file) {
+
+                        if (
+                            !file.type.startsWith(
+                                "image/"
+                            )
+                        ) {
+                            return;
+                        }
+
+                        if (
+                            file.size >
+                            5 * 1024 * 1024
+                        ) {
+
+                            alert(
+                                file.name +
+                                " is larger than 5 MB."
+                            );
+
+                            return;
+                        }
+
+
+                        const reader =
+                            new FileReader();
+
+                        reader.onload =
+                            function (event) {
+
+                                selectedImages.push({
+                                    name:
+                                        file.name,
+
+                                    preview:
+                                        event.target.result
+                                });
+
+                                renderCustomImages();
+                            };
+
+                        reader.readAsDataURL(file);
+                    }
+                );
+
+                customImages.value = "";
+            }
+        );
+    }
+
+
+    /* ---------- Remove image ---------- */
+
+    if (customImagePreview) {
+
+        customImagePreview.addEventListener(
+            "click",
+            function (event) {
+
+                const removeButton =
+                    event.target.closest(
+                        ".custom-preview-remove"
+                    );
+
+                if (!removeButton) {
+                    return;
+                }
+
+                const index =
+                    Number(
+                        removeButton.dataset.index
+                    );
+
+                selectedImages.splice(
+                    index,
+                    1
+                );
+
+                renderCustomImages();
+            }
+        );
+    }
+
+
+    /* ---------- Form submission ---------- */
+
+    customRequestForm.addEventListener(
+        "submit",
+        function (event) {
+
+            event.preventDefault();
+
+
+            /* ----- Login check ----- */
+
+            if (!isUserLoggedIn()) {
 
                 openLogin();
 
                 return;
-
             }
 
 
-            alert(
-                "You're logged in! Custom ideas will be connected next. ♡"
+            /* ----- Basic validation ----- */
+
+            let valid = true;
+
+
+            const clearError =
+                function (id) {
+
+                    const element =
+                        document.querySelector(id);
+
+                    if (element) {
+                        element.classList.remove(
+                            "show"
+                        );
+                    }
+                };
+
+
+            clearError("#custom-name-error");
+            clearError("#custom-email-error");
+            clearError("#custom-phone-error");
+            clearError("#custom-title-error");
+            clearError("#custom-description-error");
+            clearError("#custom-category-error");
+            clearError("#custom-quantity-error");
+            clearError("#custom-images-error");
+
+
+            const name =
+                customName.value.trim();
+
+            const email =
+                customEmail.value.trim();
+
+            const phone =
+                customPhone.value.trim();
+
+            const title =
+                document.querySelector("#custom-title").value.trim();
+
+            const description =
+                customDescription.value.trim();
+
+            const categoryEl =
+                document.querySelector(
+                    'input[name="category"]:checked'
+                );
+
+            const quantity =
+                Number(
+                    document.querySelector("#custom-quantity").value
+                ) || 1;
+
+
+            /* ----- Validate Name ----- */
+            if (name.length < 2) {
+
+                const error =
+                    document.querySelector(
+                        "#custom-name-error"
+                    );
+
+                error.textContent =
+                    "Please enter your name.";
+
+                error.classList.add("show");
+
+                valid = false;
+            }
+
+            /* ----- Validate Email ----- */
+            const emailPattern =
+                /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+            if (!emailPattern.test(email)) {
+
+                const error =
+                    document.querySelector(
+                        "#custom-email-error"
+                    );
+
+                error.textContent =
+                    "Please enter a valid email.";
+
+                error.classList.add("show");
+
+                valid = false;
+            }
+
+            /* ----- Validate Phone ----- */
+            const phonePattern =
+                /^[6-9][0-9]{9}$/;
+
+            if (!phonePattern.test(phone)) {
+
+                const error =
+                    document.querySelector(
+                        "#custom-phone-error"
+                    );
+
+                error.textContent =
+                    "Enter a valid 10-digit Indian mobile number.";
+
+                error.classList.add("show");
+
+                valid = false;
+            }
+
+            /* ----- Validate Title ----- */
+            if (title.length < 2) {
+                const error =
+                    document.querySelector(
+                        "#custom-title-error"
+                    );
+                error.textContent =
+                    "Please give your idea a name.";
+                error.classList.add("show");
+                valid = false;
+            }
+
+            /* ----- Validate Description ----- */
+            if (description.length < 10) {
+                const error =
+                    document.querySelector(
+                        "#custom-description-error"
+                    );
+                error.textContent =
+                    "Please describe your idea in at least 10 characters.";
+                error.classList.add("show");
+                valid = false;
+            }
+
+            /* ----- Validate Category ----- */
+            if (!categoryEl) {
+                const error =
+                    document.querySelector(
+                        "#custom-category-error"
+                    );
+                error.textContent =
+                    "Please select a category.";
+                error.classList.add("show");
+                valid = false;
+            }
+
+            /* ----- Validate Quantity ----- */
+            if (quantity < 1 || quantity > 100) {
+                const error =
+                    document.querySelector(
+                        "#custom-quantity-error"
+                    );
+                error.textContent =
+                    "Quantity must be between 1 and 100.";
+                error.classList.add("show");
+                valid = false;
+            }
+
+
+            /* ---- ⭐ NEW: Scroll to first error if invalid ---- */
+            if (!valid) {
+                // Find the first visible error message
+                const firstError = document.querySelector('.custom-error.show');
+                if (firstError) {
+                    // Find the parent field and its input
+                    const field = firstError.closest('.custom-field');
+                    if (field) {
+                        const input = field.querySelector('input, textarea, select');
+                        if (input) {
+                            input.focus();
+                            input.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        }
+                    }
+                }
+                return;
+            }
+
+
+            /* ----- Create request ----- */
+
+            const request = {
+
+                requestId:
+                    "CQ" + Date.now(),
+
+                customer: {
+
+                    name: name,
+
+                    email: email,
+
+                    phone: phone
+                },
+
+                idea: {
+
+                    title: title,
+
+                    description: description,
+
+                    category: categoryEl ? categoryEl.value : "",
+
+                    colour:
+                        document.querySelector(
+                            "#custom-colour"
+                        ).value.trim(),
+
+                    size:
+                        document.querySelector(
+                            "#custom-size"
+                        ).value.trim(),
+
+                    quantity: quantity,
+
+                    budget:
+                        document.querySelector(
+                            "#custom-budget"
+                        ).value,
+
+                    notes:
+                        document.querySelector(
+                            "#custom-notes"
+                        ).value.trim(),
+
+                    images:
+                        selectedImages
+                },
+
+                status:
+                    "Submitted",
+
+                date:
+                    new Date().toISOString()
+            };
+
+
+            /* ----- Save requests ----- */
+
+            const existingRequests =
+                JSON.parse(
+                    localStorage.getItem(
+                        "quirkzyCustomRequests"
+                    )
+                ) || [];
+
+
+            existingRequests.push(request);
+
+
+            localStorage.setItem(
+                "quirkzyCustomRequests",
+                JSON.stringify(
+                    existingRequests
+                )
             );
 
+
+            /* ----- Success ----- */
+
+            customSuccess.classList.add(
+                "show"
+            );
         }
     );
+
+
+    /* ---------- Success → Home ---------- */
+
+    if (customSuccessHome) {
+
+        customSuccessHome.addEventListener(
+            "click",
+            function () {
+
+                window.location.href =
+                    "index.html";
+            }
+        );
+    }
 
 }
 
