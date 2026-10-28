@@ -6,8 +6,8 @@ import request from "supertest";
 import { createApp } from "../lib/app.js";
 
 const { Pool } = pg;
-const databaseUrl = process.env.TEST_DATABASE_URL || process.env.DATABASE_URL;
-if (!databaseUrl) throw new Error("Set TEST_DATABASE_URL (recommended) or DATABASE_URL before running integration tests.");
+const databaseUrl = process.env.TEST_DATABASE_URL;
+if (!databaseUrl) throw new Error("Set TEST_DATABASE_URL to a disposable test database before running integration tests.");
 const pool = new Pool({ connectionString: databaseUrl, ssl: process.env.DATABASE_SSL === "true" ? { rejectUnauthorized: false } : undefined });
 const app = createApp({ pool, jwtSecret: process.env.JWT_SECRET || "test-secret-that-is-long-enough-for-ci-123456", frontendOrigin: "http://localhost:3000" });
 const email = `quirkzy-test-${Date.now()}@example.com`;
