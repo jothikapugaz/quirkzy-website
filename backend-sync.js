@@ -242,12 +242,19 @@
       if (record) {
         const product = productsBySlug.get(record.slug);
         Object.assign(selected, product);
+        if (typeof currentProduct !== "undefined" && currentProduct) Object.assign(currentProduct, product);
         localStorage.setItem("selectedProduct", JSON.stringify(selected));
         if (byId("product-name")) byId("product-name").textContent = record.name;
         if (byId("product-price")) byId("product-price").textContent = money(record.price);
         if (byId("product-image")) { byId("product-image").src = record.image; byId("product-image").alt = record.name; }
         if (byId("product-category")) byId("product-category").textContent = record.category || "";
         if (byId("product-description")) byId("product-description").textContent = record.description || "";
+        if (byId("product-dimensions")) byId("product-dimensions").textContent = record.dimensions || byId("product-dimensions").textContent || "—";
+        if (byId("product-material")) byId("product-material").textContent = record.material || byId("product-material").textContent || "—";
+        for (const id of ["product-weight","product-features","product-color","product-care"]) {
+          const field = byId(id);
+          if (field && !field.textContent.trim()) field.textContent = "—";
+        }
         for (const id of ["add-to-bag","order-now"]) {
           const button = byId(id);
           if (button) { button.disabled = Number(record.stock) < 1; if (button.disabled) button.textContent = "Out of stock"; }
