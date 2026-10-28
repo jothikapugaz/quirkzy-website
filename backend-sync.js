@@ -20,9 +20,93 @@
     }
   };
   const productSlug = () => {
-    const name = byId("product-name")?.textContent?.trim() || readJson("selectedProduct", {}).name || "";
+    const selected = readJson("selectedProduct", {}) || {};
+    const name = byId("product-name")?.textContent?.trim() || selected.name || "";
     return api.slugify(name);
   };
+
+  // GitHub Pages cannot run Express. Preserve the existing browser-only demo until an API URL is configured.
+  if (window.QUIRKZY_API_DISABLED) {
+    document.querySelectorAll(".login-note").forEach((note) => {
+      note.textContent = "Demo mode: this account is saved only in this browser. Do not use a real password.";
+    });
+    const loginForm = byId("login-form");
+    if (loginForm) {
+      let mode = "login";
+      document.addEventListener("click", (event) => {
+        const toggle = event.target.closest("#show-signup");
+        if (!toggle) return;
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        mode = mode === "login" ? "register" : "login";
+        loginForm.dataset.mode = mode;
+        const nameInput = byId("login-name");
+        const nameLabel = byId("login-name-label");
+        if (nameInput) { nameInput.hidden = mode !== "register"; nameInput.required = mode === "register"; }
+        if (nameLabel) nameLabel.hidden = mode !== "register";
+        const heading = document.querySelector(".login-page h1");
+        const button = loginForm.querySelector('button[type="submit"]');
+        const switchText = document.querySelector(".login-switch");
+        if (heading) heading.textContent = mode === "register" ? "Make it yours." : "Come on in.";
+        if (button) button.textContent = mode === "register" ? "Create account →" : "Log in →";
+        if (switchText) switchText.innerHTML = mode === "register" ? 'Already have an account? <a href="#" id="show-signup">Log in</a>' : 'Don\'t have an account? <a href="#" id="show-signup">Create one</a>';
+      }, true);
+      document.addEventListener("submit", (event) => {
+        if (event.target !== loginForm) return;
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        const email = byId("login-email")?.value.trim().toLowerCase() || "";
+        const password = byId("login-password")?.value || "";
+        const name = byId("login-name")?.value.trim() || "";
+        const message = byId("login-message");
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) || password.length < 8 || (mode === "register" && name.length < 2)) {
+          if (message) message.textContent = "Enter valid details. Demo passwords must be at least 8 characters.";
+          return;
+        }
+        let saved = null;
+        try { saved = JSON.parse(localStorage.getItem("quirkzyUser") || "null"); } catch {}
+        if (mode === "login" && (!saved || saved.email.toLowerCase() !== email)) {
+          if (message) message.textContent = "No demo account for this email in this browser. Choose Create one first.";
+          return;
+        }
+        if (mode === "register") localStorage.setItem("quirkzyUser", JSON.stringify({ name, email }));
+        if (message) message.textContent = "Demo account ready. Returning to Quirkzy…";
+        window.location.href = "index.html";
+      }, true);
+    }
+
+    if (byId("account-orders") && byId("account-custom-requests")) {
+      let user = null;
+      try { user = JSON.parse(localStorage.getItem("quirkzyUser") || "null"); } catch {}
+      if (!user) window.location.replace("login.html");
+      else {
+        if (byId("account-name")) byId("account-name").textContent = user.name || "Quirkzy friend";
+        if (byId("account-email")) byId("account-email").textContent = user.email || "";
+        const lastOrder = (() => { try { return JSON.parse(localStorage.getItem("quirkzyLastOrder") || "null"); } catch { return null; } })();
+        const ordersRoot = byId("account-orders");
+        ordersRoot.replaceChildren();
+        const orderText = document.createElement("p");
+        orderText.className = "account-empty";
+        orderText.textContent = lastOrder ? "Last demo order: " + (lastOrder.order_number || "saved in this browser") + " · " + money(lastOrder.total) : "No demo orders saved in this browser yet. Full order history requires the backend.";
+        ordersRoot.appendChild(orderText);
+        const requestsRoot = byId("account-custom-requests");
+        requestsRoot.replaceChildren();
+        const requestText = document.createElement("p");
+        requestText.className = "account-empty";
+        requestText.textContent = "Custom request history is available when the backend is deployed.";
+        requestsRoot.appendChild(requestText);
+      }
+    }
+    document.addEventListener("click", (event) => {
+      const button = event.target.closest("#logout-button");
+      if (!button) return;
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      localStorage.removeItem("quirkzyUser");
+      window.location.href = "login.html";
+    }, true);
+    return;
+  }
 
   // Keep logged-in carts persisted on the server while retaining a local cache for guests.
   const originalSetItem = Storage.prototype.setItem;
