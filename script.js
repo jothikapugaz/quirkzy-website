@@ -3993,6 +3993,9 @@ if (customRequestForm) {
                         ×
                     </button>
                 `;
+                const previewImage = preview.querySelector("img");
+                if (previewImage) previewImage.dataset.filename = image.name;
+
 
                 customImagePreview.appendChild(
                     preview
