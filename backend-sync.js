@@ -259,6 +259,12 @@
           const button = byId(id);
           if (button) { button.disabled = Number(record.stock) < 1; if (button.disabled) button.textContent = "Out of stock"; }
         }
+      } else {
+        if (byId("product-description")) byId("product-description").textContent = "This product is no longer available.";
+        for (const id of ["add-to-bag","order-now"]) {
+          const button = byId(id);
+          if (button) { button.disabled = true; button.textContent = "Unavailable"; }
+        }
       }
     }
 
