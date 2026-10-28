@@ -54,6 +54,14 @@ test("registration hashes passwords and returns an authenticated session", async
   userId = response.body.user.id;
   const saved = await pool.query("SELECT password_hash FROM users WHERE id=$1", [userId]);
   assert.notEqual(saved.rows[0].password_hash, "strong-password-123");
+  await request(app).post("/api/auth/register").send({ name: "Quirkzy Tester", email, password: "strong-password-123" }).expect(409);
+});
+
+test("login rejects incorrect passwords and accepts valid credentials", async () => {
+  await request(app).post("/api/auth/login").send({ email, password: "wrong-password-123" }).expect(401);
+  const response = await request(app).post("/api/auth/login").send({ email, password: "strong-password-123" }).expect(200);
+  assert.ok(response.body.token);
+  assert.equal(response.body.user.email, email);
 });
 
 test("protected cart and wishlist persist for the signed-in user", async () => {
@@ -74,6 +82,10 @@ test("reviews validate ratings and are available to later reads", async () => {
 });
 
 test("orders use server-side product prices and are saved to the database", async () => {
+  await request(app).post("/api/orders").set("Authorization", `Bearer ${token}`).send({
+    customer: { name: "Quirkzy Tester", email, phone: "123", address: "12 Example Street", city: "Chennai", pincode: "600001" },
+    items: [{ slug: "ufo-planter", quantity: 1 }]
+  }).expect(400);
   const response = await request(app).post("/api/orders").set("Authorization", `Bearer ${token}`).send({
     customer: { name: "Quirkzy Tester", email, phone: "9876543210", address: "12 Example Street", city: "Chennai", pincode: "600001" },
     items: [{ slug: "ufo-planter", quantity: 1 }],
