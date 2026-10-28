@@ -39,6 +39,8 @@ jobs:
       - run: node --check script.js
       - run: node --check api-client.js
       - run: node --check backend-sync.js
+      - run: node --check admin.js
+      - run: node --check scripts/promote-admin.js
       - run: npm run db:migrate
       - run: npm run db:seed
       - run: npm test
