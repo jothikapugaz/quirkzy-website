@@ -8,11 +8,12 @@ Quirkzy is a playful, responsive e-commerce portfolio project for quirky home, d
 
 ## Features
 
-- Responsive home, product, cart, wishlist, login, checkout, and custom-request pages
+- Responsive home, product, cart, wishlist, account history, login, checkout, and custom-request pages
 - Product catalogue with category/search API support
 - Express REST API and PostgreSQL persistence
 - Password-hashed accounts and signed JWT sessions
 - Server-persisted carts and wishlists for signed-in users
+- Account dashboard with personal order and custom-request history
 - Product reviews with server-side validation
 - Checkout orders with server-calculated prices and totals
 - Custom product requests
