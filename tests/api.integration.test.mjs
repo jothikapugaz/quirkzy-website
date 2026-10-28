@@ -28,7 +28,8 @@ after(async () => {
 test("serves the responsive frontend from the app root", async () => {
   const response = await request(app).get("/").expect(200);
   assert.match(response.text, /QUIRKZY/);
-  assert.match(response.text, /name="viewport"/);\n  await request(app).get("/account.html").expect(200);
+  assert.match(response.text, /name="viewport"/);
+  await request(app).get("/account.html").expect(200);
 });
 
 test("health check confirms PostgreSQL connectivity", async () => {
