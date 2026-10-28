@@ -30,6 +30,11 @@ test("serves the responsive frontend from the app root", async () => {
   assert.match(response.text, /QUIRKZY/);
   assert.match(response.text, /name="viewport"/);
   await request(app).get("/account.html").expect(200);
+  await request(app).get("/product.html").expect(200);
+  await request(app).get("/style.css").expect(200);
+  await request(app).get("/server.js").expect(404);
+  await request(app).get("/.env.example").expect(404);
+  await request(app).get("/migrations/001_initial.sql").expect(404);
 });
 
 test("health check confirms PostgreSQL connectivity", async () => {
