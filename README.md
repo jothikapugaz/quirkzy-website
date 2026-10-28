@@ -1,6 +1,6 @@
 # Quirkzy — Weird & Wonderful
 
-Quirkzy is a playful, responsive e-commerce portfolio project for quirky home, desk, and décor products. The original multi-page frontend is being connected to a Node.js/Express API and PostgreSQL database.
+Quirkzy is a playful, responsive e-commerce portfolio project for quirky home, desk, and décor products. The multi-page frontend is connected to a Node.js/Express API and PostgreSQL database for local full-stack use.
 
 **Live frontend (static demo):** https://jothikapugaz.github.io/quirkzy-website/
 
@@ -86,7 +86,7 @@ Authenticated endpoints require an `Authorization: Bearer <token>` header.
 
 ## Tests
 
-The integration suite expects a migrated and seeded test database. Set `TEST_DATABASE_URL` to a disposable database, then run:
+The integration suite expects a migrated and seeded **disposable** test database. Point both `DATABASE_URL` and `TEST_DATABASE_URL` to that test database before running these commands. Never run tests against production data:
 
 ```bash
 npm run db:migrate
