@@ -2368,8 +2368,7 @@ function updateCartSummary() {
     );
 
 
-    const shipping =
-        50;
+    const shipping = subtotal >= 1500 ? 0 : 50;
 
 
     const total =
