@@ -21,7 +21,16 @@
 
             <div class="nav-top">
 
-                <a href="#" class="logo">QUIRKZY</a>
+                <button
+                    type="button"
+                    id="menu-button"
+                    class="icon-button menu-button"
+                    aria-label="Open categories menu"
+                    aria-controls="catalog-menu"
+                    aria-expanded="false"
+                >☰</button>
+
+                <a href="index.html" class="logo">QUIRKZY</a>
 
                 <div class="nav-icons">
 
@@ -73,6 +82,30 @@
         </nav>
     </header>
 
+    <div id="catalog-overlay" class="catalog-overlay" aria-hidden="true"></div>
+    <aside id="catalog-menu" class="catalog-menu" aria-hidden="true" aria-label="Shop categories">
+        <div class="catalog-menu-header">
+            <a href="index.html" class="catalog-menu-logo">QUIRKZY</a>
+            <button type="button" id="catalog-close" class="icon-button" aria-label="Close categories menu">×</button>
+        </div>
+        <p class="catalog-menu-kicker">WEIRD &amp; WONDERFUL</p>
+        <a href="#shop" data-menu-link class="catalog-menu-link">Shop all products <span>→</span></a>
+        <button type="button" id="catalog-shop-toggle" class="catalog-shop-toggle" aria-expanded="false">
+            Browse categories <span>＋</span>
+        </button>
+        <div id="catalog-submenu" class="catalog-submenu">
+            <button type="button" data-menu-category="all">All products</button>
+            <button type="button" data-menu-category="plant-pals">Plant pals</button>
+            <button type="button" data-menu-category="desk-office">Desk &amp; office</button>
+            <button type="button" data-menu-category="home-decor">Home décor</button>
+        </div>
+        <div class="catalog-menu-divider"></div>
+        <a href="#story" data-menu-link class="catalog-menu-link">Our story <span>→</span></a>
+        <a href="#custom" data-menu-link class="catalog-menu-link">Custom ideas <span>→</span></a>
+        <a href="wishlist.html" data-menu-link class="catalog-menu-link">Wishlist <span>♡</span></a>
+        <a href="account.html" data-menu-link class="catalog-menu-link">My account <span>→</span></a>
+        <a href="cart.html" data-menu-link class="catalog-menu-link">Shopping bag <span>→</span></a>
+    </aside>
 
     <!-- =========================================
          MAIN CONTENT
@@ -332,12 +365,27 @@
          FOOTER
     ========================================== -->
 
-    <footer>
-
-        <p>QUIRKZY ♡</p>
-
-        <p>Weird &amp; Wonderful.</p>
-
+    <footer class="site-footer">
+        <div class="site-footer-brand">
+            <a href="index.html">QUIRKZY ♡</a>
+            <p>Weird &amp; Wonderful.</p>
+            <span>Little things. Big personality.</span>
+        </div>
+        <div class="site-footer-links">
+            <div>
+                <strong>Explore</strong>
+                <a href="#shop">Shop all</a>
+                <a href="#story">Our story</a>
+                <a href="#custom">Custom ideas</a>
+            </div>
+            <div>
+                <strong>Your corner</strong>
+                <a href="wishlist.html">Wishlist</a>
+                <a href="account.html">My account</a>
+                <a href="cart.html">Shopping bag</a>
+            </div>
+        </div>
+        <p class="site-footer-note">Made with a little extra quirk. © Quirkzy</p>
     </footer>
 
 
