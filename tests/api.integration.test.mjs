@@ -25,6 +25,12 @@ after(async () => {
   await pool.end();
 });
 
+test("serves the responsive frontend from the app root", async () => {
+  const response = await request(app).get("/").expect(200);
+  assert.match(response.text, /QUIRKZY/);
+  assert.match(response.text, /name="viewport"/);
+});
+
 test("health check confirms PostgreSQL connectivity", async () => {
   const response = await request(app).get("/api/health").expect(200);
   assert.deepEqual(response.body, { status: "ok", database: "connected" });
