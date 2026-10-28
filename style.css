@@ -5079,3 +5079,14 @@ button, a { -webkit-tap-highlight-color: transparent; }
 [hidden] { display:none !important; }
 @media (max-width:760px) { .admin-product-form { grid-template-columns:repeat(2,minmax(0,1fr)); } .admin-field-wide { grid-column:span 2; } }
 @media (max-width:460px) { .admin-header { align-items:flex-start; } .admin-brand { font-size:19px; } .admin-header-actions { flex-direction:column; align-items:flex-end; } .admin-product-form { grid-template-columns:minmax(0,1fr); } .admin-field-wide { grid-column:auto; } .admin-login-panel { margin:36px auto; } }
+
+
+/* Customer account order and custom-request history */
+.account-order-card, .account-request-card { min-width:0; padding:18px; margin-bottom:12px; background:#fff; border:1px solid #eadcc9; border-radius:16px; }
+.account-order-heading { display:flex; align-items:flex-start; justify-content:space-between; gap:12px; flex-wrap:wrap; }
+.account-order-heading strong, .account-order-heading small, .account-request-card strong, .account-request-card small { display:block; }
+.account-order-heading small, .account-request-card small, .account-order-payment { display:block; margin-top:5px; color:#6b5b4c; font-size:12px; }
+.account-order-status { display:inline-flex; padding:6px 10px; border-radius:20px; background:#fff4f5; color:#9a5360; font-size:12px; font-weight:700; text-transform:capitalize; }
+.account-order-items { margin:14px 0; padding-left:20px; color:#6b5b4c; font-size:13px; line-height:1.8; }
+.account-order-total { margin:12px 0 0; font-weight:700; font-size:13px; overflow-wrap:anywhere; }
+.account-request-card p { margin:7px 0; color:#6b5b4c; font-size:13px; }
