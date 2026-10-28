@@ -22,7 +22,7 @@
   const productSlug = () => {
     const selected = readJson("selectedProduct", {}) || {};
     const name = byId("product-name")?.textContent?.trim() || selected.name || "";
-    return api.slugify(name);
+    return selected.slug || api.slugify(name);
   };
 
   // GitHub Pages cannot run Express. Preserve the existing browser-only demo until an API URL is configured.
@@ -107,6 +107,179 @@
     }, true);
     return;
   }
+
+  // The database is the catalogue source of truth whenever the API is available.
+  async function syncCatalogWithApi() {
+    const grid = document.querySelector("#shop .product-grid");
+    const productPage = document.querySelector(".product-page");
+    let records;
+    try {
+      const result = await api.getProducts();
+      records = Array.isArray(result.products) ? result.products : [];
+    } catch (error) {
+      console.warn("Catalogue sync unavailable; keeping the current storefront:", error.message);
+      return;
+    }
+
+    const productsBySlug = new Map();
+    const localProducts = typeof quirkzyProducts !== "undefined" ? quirkzyProducts : [];
+    for (const record of records) {
+      const product = {
+        name: record.name,
+        slug: record.slug,
+        price: money(record.price),
+        image: record.image,
+        category: record.category || "",
+        description: record.description || "",
+        stock: Number(record.stock)
+      };
+      const existing = localProducts.find((item) => api.slugify(item.name) === record.slug || item.slug === record.slug);
+      if (existing) Object.assign(existing, product);
+      else localProducts.push(product);
+      productsBySlug.set(record.slug, existing || product);
+    }
+
+    if (grid) {
+      const existingCards = [...grid.querySelectorAll(".product-card")];
+      const matched = new Set();
+      for (const record of records) {
+        const card = existingCards.find((candidate) => {
+          const name = candidate.querySelector("h3")?.textContent?.trim() || "";
+          return api.slugify(name) === record.slug || candidate.dataset.productSlug === record.slug;
+        });
+        const product = productsBySlug.get(record.slug);
+        let target = card;
+        if (target) {
+          matched.add(target);
+        } else {
+          target = document.createElement("article");
+          target.className = "product-card";
+          const image = document.createElement("img");
+          const info = document.createElement("div");
+          info.className = "product-info";
+          info.append(document.createElement("h3"), document.createElement("span"));
+          const add = document.createElement("button");
+          add.type = "button";
+          add.textContent = "Add to bag +";
+          info.appendChild(add);
+          target.append(image, info);
+          grid.appendChild(target);
+          const heart = document.createElement("button");
+          heart.type = "button";
+          heart.className = "card-wishlist-button";
+          heart.setAttribute("aria-label", "Add to wishlist");
+          heart.setAttribute("aria-pressed", "false");
+          heart.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.8 8.7 C20.8 5.9 18.7 4 16.1 4 C14.6 4 13.2 4.7 12 6 C10.8 4.7 9.4 4 7.9 4 C5.3 4 3.2 5.9 3.2 8.7 C3.2 13.2 7.2 16.1 12 20 C16.8 16.1 20.8 13.2 20.8 8.7Z"/></svg>';
+          target.appendChild(heart);
+        }
+        target.dataset.category = product.category;
+        target.dataset.productSlug = product.slug;
+        target.dataset.apiProduct = "true";
+        const image = target.querySelector("img");
+        const name = target.querySelector("h3");
+        const price = target.querySelector(".product-info span");
+        const addButton = target.querySelector(".product-info button");
+        if (image) { image.src = product.image; image.alt = product.name; }
+        if (name) name.textContent = product.name;
+        if (price) price.textContent = product.price;
+        if (addButton) {
+          addButton.disabled = product.stock < 1;
+          addButton.textContent = product.stock < 1 ? "Out of stock" : "Add to bag +";
+        }
+        const heart = target.querySelector(".card-wishlist-button");
+        if (heart && typeof updateWishlistButton === "function") updateWishlistButton(heart, product.name);
+      }
+      existingCards.forEach((card) => { if (!matched.has(card) && !records.some((r) => r.slug === card.dataset.productSlug)) card.remove(); });
+
+      const categoryButtons = document.querySelector(".category-buttons");
+      if (categoryButtons) {
+        const known = new Set([...categoryButtons.querySelectorAll(".category-btn")].map((button) => button.dataset.category));
+        for (const category of [...new Set(records.map((record) => record.category).filter(Boolean))]) {
+          if (known.has(category)) continue;
+          const button = document.createElement("button");
+          button.type = "button";
+          button.className = "category-btn";
+          button.dataset.category = category;
+          button.textContent = category.replace(/-/g, " ").toUpperCase();
+          button.addEventListener("click", () => {
+            categoryButtons.querySelectorAll(".category-btn").forEach((item) => item.classList.toggle("active", item === button));
+            grid.querySelectorAll(".product-card").forEach((card) => { card.style.display = category === "all" || card.dataset.category === category ? "" : "none"; });
+          });
+          categoryButtons.appendChild(button);
+        }
+      }
+    }
+
+    // Intercept cards in capture phase so the old demo handlers cannot use stale hard-coded prices.
+    document.addEventListener("click", (event) => {
+      const card = event.target.closest("#shop .product-card[data-api-product='true']");
+      if (!card) return;
+      const product = productsBySlug.get(card.dataset.productSlug);
+      if (!product) return;
+      event.preventDefault();
+      event.stopPropagation();
+      event.stopImmediatePropagation();
+      const heart = event.target.closest(".card-wishlist-button");
+      if (heart) {
+        if (typeof handleWishlistClick === "function") handleWishlistClick(heart, product);
+        return;
+      }
+      if (event.target.closest(".product-info button")) {
+        if (product.stock < 1) return notify("This product is currently out of stock.");
+        const added = typeof addProductToBagWithLogin === "function" && addProductToBagWithLogin(product);
+        if (added) notify(product.name + " added to your bag! ♡");
+        return;
+      }
+      sessionStorage.setItem("quirkzyScrollPosition", window.scrollY);
+      if (typeof selectProduct === "function") selectProduct(product);
+      window.location.href = "product.html";
+    }, true);
+
+    if (productPage) {
+      const selected = readJson("selectedProduct", {}) || {};
+      const slug = selected.slug || api.slugify(selected.name || byId("product-name")?.textContent || "");
+      const record = records.find((item) => item.slug === slug);
+      if (record) {
+        const product = productsBySlug.get(record.slug);
+        Object.assign(selected, product);
+        localStorage.setItem("selectedProduct", JSON.stringify(selected));
+        if (byId("product-name")) byId("product-name").textContent = record.name;
+        if (byId("product-price")) byId("product-price").textContent = money(record.price);
+        if (byId("product-image")) { byId("product-image").src = record.image; byId("product-image").alt = record.name; }
+        if (byId("product-category")) byId("product-category").textContent = record.category || "";
+        if (byId("product-description")) byId("product-description").textContent = record.description || "";
+        for (const id of ["add-to-bag","order-now"]) {
+          const button = byId(id);
+          if (button) { button.disabled = Number(record.stock) < 1; if (button.disabled) button.textContent = "Out of stock"; }
+        }
+      }
+    }
+
+    // Refresh prices and image references in saved lists from the server's catalogue.
+    let changedBag = false;
+    const bag = readJson("quirkzyBag", []);
+    for (const item of bag) {
+      const record = records.find((entry) => entry.slug === (item.slug || api.slugify(item.name)));
+      if (!record) continue;
+      if (item.price !== money(record.price) || item.image !== record.image || item.name !== record.name) changedBag = true;
+      Object.assign(item, { slug:record.slug, name:record.name, price:money(record.price), image:record.image, category:record.category });
+    }
+    if (changedBag) {
+      localStorage.setItem("quirkzyBag", JSON.stringify(bag));
+      if (typeof renderCart === "function") renderCart();
+      if (typeof updateBagCount === "function") updateBagCount();
+    }
+    const wishlist = readJson("quirkzyWishlist", []);
+    let changedWishlist = false;
+    for (const item of wishlist) {
+      const record = records.find((entry) => entry.slug === (item.slug || api.slugify(item.name)));
+      if (!record) continue;
+      if (item.price !== money(record.price) || item.image !== record.image || item.name !== record.name) changedWishlist = true;
+      Object.assign(item, { slug:record.slug, name:record.name, price:money(record.price), image:record.image, category:record.category });
+    }
+    if (changedWishlist) localStorage.setItem("quirkzyWishlist", JSON.stringify(wishlist));
+  }
+  syncCatalogWithApi();
 
   // Keep logged-in carts persisted on the server while retaining a local cache for guests.
   const originalSetItem = Storage.prototype.setItem;
