@@ -481,6 +481,9 @@ function addProductToBag(product) {
             name:
                 product.name,
 
+            slug:
+                product.slug || product.name.toLowerCase().trim().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, ""),
+
             price:
                 product.price,
 
@@ -967,7 +970,7 @@ categoryButtons.forEach(function (button) {
             );
 
 
-            homeProductCards.forEach(
+            document.querySelectorAll("#shop .product-card").forEach(
                 function (productCard) {
 
                     const category =
