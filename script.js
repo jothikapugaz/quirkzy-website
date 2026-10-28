@@ -954,13 +954,9 @@ categoryButtons.forEach(function (button) {
                 button.dataset.category;
 
 
-            categoryButtons.forEach(
+            document.querySelectorAll(".category-btn").forEach(
                 function (categoryButton) {
-
-                    categoryButton.classList.remove(
-                        "active"
-                    );
-
+                    categoryButton.classList.remove("active");
                 }
             );
 
