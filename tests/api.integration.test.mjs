@@ -3,6 +3,7 @@ import test, { after, before } from "node:test";
 import assert from "node:assert/strict";
 import pg from "pg";
 import request from "supertest";
+import bcrypt from "bcryptjs";
 import { createApp } from "../lib/app.js";
 
 const { Pool } = pg;
@@ -13,6 +14,8 @@ const app = createApp({ pool, jwtSecret: process.env.JWT_SECRET || "test-secret-
 const email = `quirkzy-test-${Date.now()}@example.com`;
 let token = "";
 let userId = 0;
+let adminUserId = 0;
+let adminToken = "";
 
 before(async () => {
   await pool.query("SELECT 1");
@@ -21,6 +24,7 @@ before(async () => {
 });
 
 after(async () => {
+  if (adminUserId) await pool.query("DELETE FROM users WHERE id=$1", [adminUserId]);
   if (userId) await pool.query("DELETE FROM users WHERE id=$1", [userId]);
   await pool.end();
 });
@@ -30,6 +34,8 @@ test("serves the responsive frontend from the app root", async () => {
   assert.match(response.text, /QUIRKZY/);
   assert.match(response.text, /name="viewport"/);
   await request(app).get("/account.html").expect(200);
+  await request(app).get("/admin.html").expect(200);
+  await request(app).get("/admin.js").expect(200);
   await request(app).get("/product.html").expect(200);
   await request(app).get("/style.css").expect(200);
   await request(app).get("/server.js").expect(404);
@@ -67,6 +73,31 @@ test("login rejects incorrect passwords and accepts valid credentials", async ()
   const response = await request(app).post("/api/auth/login").send({ email, password: "strong-password-123" }).expect(200);
   assert.ok(response.body.token);
   assert.equal(response.body.user.email, email);
+});
+
+test("admin access is role-protected and separate from customer login", async () => {
+  await request(app).get("/api/admin/summary").expect(401);
+  await request(app).get("/api/admin/summary").set("Authorization", `Bearer ${token}`).expect(403);
+  await request(app).post("/api/admin/login").send({ email, password: "strong-password-123" }).expect(401);
+
+  const adminEmail = `quirkzy-admin-test-${Date.now()}@example.com`;
+  const passwordHash = await bcrypt.hash("admin-password-123", 10);
+  const created = await pool.query(
+    "INSERT INTO users(name,email,password_hash,role) VALUES($1,$2,$3,'admin') RETURNING id",
+    ["Quirkzy Admin Test", adminEmail, passwordHash]
+  );
+  adminUserId = Number(created.rows[0].id);
+  const login = await request(app).post("/api/admin/login").send({ email: adminEmail, password: "admin-password-123" }).expect(200);
+  assert.equal(login.body.user.role, "admin");
+  assert.ok(login.body.token);
+  adminToken = login.body.token;
+  const summary = await request(app).get("/api/admin/summary").set("Authorization", `Bearer ${adminToken}`).expect(200);
+  assert.ok(summary.body.products.total >= 4);
+  await request(app).get("/api/admin/products").set("Authorization", `Bearer ${adminToken}`).expect(200);
+  await request(app).get("/api/admin/orders").set("Authorization", `Bearer ${adminToken}`).expect(200);
+
+  await pool.query("UPDATE users SET role='customer' WHERE id=$1", [adminUserId]);
+  await request(app).get("/api/admin/summary").set("Authorization", `Bearer ${adminToken}`).expect(403);
 });
 
 test("protected cart and wishlist persist for the signed-in user", async () => {
