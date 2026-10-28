@@ -1,198 +1,130 @@
 # Quirkzy — Weird & Wonderful
 
-A playful, responsive e-commerce website concept developed for Quirkzy, a brand focused on fun, quirky, and creative products.
+Quirkzy is a playful, responsive e-commerce portfolio project for quirky home, desk, and décor products. The multi-page frontend is connected to a Node.js/Express API and PostgreSQL database for local full-stack use.
 
-**Live Demo:** https://jothikapugaz.github.io/quirkzy-website/
+**Live frontend (static demo):** https://jothikapugaz.github.io/quirkzy-website/
 
----
-
-## About
-
-Quirkzy is a front-end e-commerce website concept built around a playful **"Weird & Wonderful"** theme.
-
-The project focuses on creating an engaging shopping experience while demonstrating practical front-end development concepts such as dynamic product rendering, client-side state management, form validation, responsive design, and browser-based data persistence.
-
----
+> The GitHub Pages URL hosts only static files. Full account, cart, review, custom-request, and order persistence requires the API and PostgreSQL database to be deployed and the API URL configured in `api-config.js`. No real payment is collected.
 
 ## Features
 
-- Responsive home and shop page
-- Dynamic product details
-- Product category filtering
-- Shopping bag with quantity management
-- Wishlist functionality
-- Demo login system
-- Product reviews and ratings
-- Checkout flow with client-side validation
-- Delivery information form
-- Order summary and shipping calculation
-- Order confirmation interface
-- LocalStorage-based data persistence
-- Mobile-friendly interface
+- Responsive home, product, cart, wishlist, account history, login, checkout, and custom-request pages
+- Product catalogue with category/search API support
+- Express REST API and PostgreSQL persistence
+- Password-hashed accounts and signed JWT sessions
+- Server-persisted carts and wishlists for signed-in users
+- Account dashboard with personal order and custom-request history
+- Product reviews with server-side validation
+- Checkout orders with server-calculated prices and totals
+- Custom product requests
+- Database migrations and repeatable catalogue seeding
+- Automated API/database integration tests and GitHub Actions CI
 
----
+## Stack
 
-## Product Catalog
+- Frontend: HTML5, CSS3, vanilla JavaScript
+- Backend: Node.js, Express
+- Database: PostgreSQL
+- Security: bcrypt password hashing, JWT authentication, Helmet, rate limiting, parameterized SQL
+- Testing: Node.js test runner, Supertest, PostgreSQL service in GitHub Actions
+- Deployment blueprint: Render (`render.yaml`)
 
-The current catalog includes:
+## Run locally
 
-- UFO Planter
-- Desk Organizer
-- Potter Pen Holder
-- Mushroom Lamp
+Requirements: Node.js 20+, PostgreSQL 15+.
 
----
+1. Clone the repository and install dependencies:
 
-## Technologies
+   ```bash
+   npm install
+   ```
 
-- HTML5
-- CSS3
-- JavaScript
-- LocalStorage
-- Git & GitHub
-- GitHub Pages
+2. Create a PostgreSQL database named `quirkzy`, then copy `.env.example` to `.env` and update `DATABASE_URL`. Set `JWT_SECRET` to a random secret of at least 32 characters. Never commit `.env`.
 
----
+3. Create the tables and seed the catalogue:
 
-## Project Structure
+   ```bash
+   npm run db:migrate
+   npm run db:seed
+   ```
 
-| File / Folder | Purpose |
+4. Start the app:
+
+   ```bash
+   npm run dev
+   ```
+
+5. Open http://localhost:3000. Check http://localhost:3000/api/health; a healthy response is `{"status":"ok","database":"connected"}`.
+
+## Environment variables
+
+| Variable | Purpose |
 |---|---|
-| `index.html` | Home and shop page |
-| `product.html` | Dynamic product details |
-| `cart.html` | Shopping bag |
-| `wishlist.html` | Wishlist |
-| `checkout.html` | Checkout and order placement |
-| `login.html` | Login interface |
-| `style.css` | Website styling and responsive layout |
-| `script.js` | Product, bag, wishlist, reviews, login and checkout functionality |
-| `assets/` | Product and website images |
+| `DATABASE_URL` | PostgreSQL connection string |
+| `JWT_SECRET` | Secret used to sign authentication tokens (minimum 32 characters) |
+| `PORT` | Server port; defaults to 3000 |
+| `FRONTEND_ORIGIN` | Optional frontend origin allowed by CORS |
+| `DATABASE_SSL` | Set to `true` for hosted databases that require TLS |
+| `DB_POOL_MAX` | Optional PostgreSQL pool size; defaults to 10 |
 
----
+## Main API routes
 
-## Technical Highlights
+| Method | Route | Purpose |
+|---|---|---|
+| GET | `/api/health` | API/database health |
+| GET | `/api/products` | Product catalogue, optional `search` and `category` |
+| POST | `/api/auth/register` | Create account |
+| POST | `/api/auth/login` | Sign in |
+| GET | `/api/auth/me` | Validate current session |
+| GET / PUT | `/api/cart` | Read/save signed-in cart |
+| GET / POST / DELETE | `/api/wishlist` and `/api/wishlist/:slug` | Wishlist operations |
+| GET / POST | `/api/products/:slug/reviews` | Read/add a product review |
+| GET / POST | `/api/orders` | Read order history / place an order |
+| GET / POST | `/api/custom-requests` | Read / submit custom product requests |
 
-- Modular JavaScript structure with reusable helper functions
-- Centralized product catalog for product management
-- Dynamic product rendering and product navigation
-- DOM manipulation and event-driven UI interactions
-- Shopping bag with quantity controls and automatic total calculation
-- Wishlist system with persistent browser storage
-- Product-specific review and rating system
-- Client-side checkout form validation
-- Dynamic order summary and shipping calculation
-- LocalStorage-based client-side state persistence
-- Responsive design for desktop and mobile devices
-- Dynamic rendering of similar products
-- Persistent user, cart, wishlist, review, and checkout data across sessions
-- Git-based version control
-- Deployment using GitHub Pages
+Authenticated endpoints require an `Authorization: Bearer <token>` header.
 
----
+## Tests
 
-## User Experience
+The integration suite **requires a dedicated disposable test database** so it cannot accidentally write test orders or reduce stock in your development database.
 
-The website is designed to provide a simple and playful shopping experience.
+1. Create a PostgreSQL database named `quirkzy_test`.
+2. Temporarily point both `DATABASE_URL` and `TEST_DATABASE_URL` to that database in your terminal environment.
+3. Apply migrations and seed products, then run the suite:
 
-Users can:
+   ```bash
+   npm run db:migrate
+   npm run db:seed
+   npm test
+   ```
 
-1. Browse products
-2. Filter products by category
-3. View detailed product information
-4. Add products to their shopping bag
-5. Save products to their wishlist
-6. Adjust product quantities
-7. Submit product reviews and ratings
-8. Proceed through the checkout flow
-9. Enter and validate delivery information
-10. Place a demo order
-11. Receive an order confirmation
+For Windows PowerShell, set the variables for the current terminal session before running the commands:
 
----
+```powershell
+$env:DATABASE_URL = "postgresql://postgres:YOUR_PASSWORD@localhost:5432/quirkzy_test"
+$env:TEST_DATABASE_URL = $env:DATABASE_URL
+npm run db:migrate
+npm run db:seed
+npm test
+```
 
-## Data Persistence
+Restore your development `DATABASE_URL` after testing. Never point integration tests at a production database. The suite creates and removes a test user and creates test orders/reviews.
 
-The project uses the browser's **LocalStorage API** to maintain client-side application state.
-
-The following information can persist across browser sessions:
-
-- User login information
-- Shopping bag contents
-- Wishlist items
-- Product reviews
-- Checkout items
-- Last placed order
-
-This allows the website to behave like a small interactive e-commerce application without requiring a backend server.
-
----
-
-## Checkout & Validation
-
-The checkout system includes client-side validation for delivery information.
-
-Validation includes:
-
-- Required field checking
-- Email format validation
-- Indian mobile number validation
-- Six-digit PIN code validation
-- Visual error indication
-- Automatic focus on the first invalid field
-- Order summary calculation
-- Shipping calculation
-- Order confirmation interface
-
-The checkout currently operates as a **demo order flow** and does not process real payments.
-
----
-
-## Responsive Design
-
-The website is designed to adapt to different screen sizes, with a focus on providing a usable experience across:
-
-- Mobile devices
-- Tablets
-- Desktop screens
-
-The layout, product cards, navigation, forms, and checkout sections are styled using responsive CSS techniques.
-
----
-
-## Future Enhancements
-
-- Backend and database integration
-- Secure user authentication
-- Real payment gateway integration
-- Product search functionality
-- Admin dashboard and product management
-- Order tracking
-- Custom product request functionality
-- Server-side order management
-- Real customer accounts
-- Production-ready payment and security infrastructure
-
----
 
 ## Deployment
 
-The website is deployed using **GitHub Pages**.
+- Deploy the API and PostgreSQL database using a host that supports Node.js and PostgreSQL. `render.yaml` provides a starting blueprint.
+- Configure the service's `DATABASE_URL`, `JWT_SECRET`, and `DATABASE_SSL` variables.
+- Run `npm run db:migrate` and `npm run db:seed` against the hosted database.
+- For a separately hosted GitHub Pages frontend, set `window.QUIRKZY_API_BASE` in `api-config.js` to the deployed API origin and ensure that origin is permitted by the API's CORS policy.
+- Re-run the mobile and desktop shopping flow after deployment.
 
-**Live Website:**  
-https://jothikapugaz.github.io/quirkzy-website/
+## Important limitations
 
----
+- The current online-payment choice is a demo only; it does not charge a card or UPI account. Use a payment provider and verified webhook flow before accepting real payments.
+- Reference images selected on the custom-request form are currently recorded as filenames/metadata; production image storage requires an object-storage service.
+- This is a portfolio project, not a production store. Before real customers use it, add a verified payment integration, email notifications, monitoring, backups, and a privacy policy/terms.
 
 ## Author
 
-**Jothika P**
-
-This project was developed as a front-end web development project and portfolio piece.
-
----
-
-## Disclaimer
-
-This is a front-end e-commerce concept created for demonstration and portfolio purposes.
-
-The login, checkout, payment, and order systems are currently demo implementations and do not process real customer accounts, payments, or orders.
+Jothika P

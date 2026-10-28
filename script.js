@@ -2368,8 +2368,7 @@ function updateCartSummary() {
     );
 
 
-    const shipping =
-        50;
+    const shipping = subtotal >= 1500 ? 0 : 50;
 
 
     const total =
@@ -2996,25 +2995,22 @@ function displayReviews() {
             }
 
 
-            reviewElement.innerHTML = `
+            const header = document.createElement("div");
+            header.className = "review-card-header";
 
-                <div class="review-card-header">
+            const author = document.createElement("strong");
+            author.textContent = review.name || "Quirkzy customer";
 
-                    <strong>
-                        ${review.name}
-                    </strong>
+            const rating = document.createElement("span");
+            rating.className = "review-stars";
+            rating.textContent = stars;
 
-                    <span class="review-stars">
-                        ${stars}
-                    </span>
+            const body = document.createElement("p");
+            body.textContent = review.text || "";
 
-                </div>
+            header.append(author, rating);
+            reviewElement.append(header, body);
 
-                <p>
-                    ${review.text}
-                </p>
-
-            `;
 
 
             reviewsList.appendChild(
@@ -3997,6 +3993,9 @@ if (customRequestForm) {
                         ×
                     </button>
                 `;
+                const previewImage = preview.querySelector("img");
+                if (previewImage) previewImage.dataset.filename = image.name;
+
 
                 customImagePreview.appendChild(
                     preview

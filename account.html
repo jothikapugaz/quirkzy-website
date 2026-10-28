@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Manage your Quirkzy account, orders, and custom ideas.">
+  <title>Quirkzy — My Account</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="account-page">
+    <header class="account-header">
+      <a href="index.html" class="account-logo">Quirkzy</a>
+      <a href="index.html#shop" class="account-shop-link">← Back to shop</a>
+    </header>
+
+    <section class="account-welcome">
+      <div>
+        <p class="wishlist-label">YOUR LITTLE CORNER</p>
+        <h1>Hi, <span id="account-name">Quirkzy friend</span> ♡</h1>
+        <p id="account-email" class="account-email">Loading your account…</p>
+      </div>
+      <button type="button" id="logout-button" class="account-logout">Sign out</button>
+    </section>
+
+    <section class="account-section" aria-labelledby="account-orders-heading">
+      <div class="account-section-heading">
+        <div>
+          <p class="wishlist-label">THE GOODIES</p>
+          <h2 id="account-orders-heading">Your orders</h2>
+        </div>
+      </div>
+      <div id="account-orders" class="account-list" aria-live="polite">
+        <p class="account-empty">Loading your orders…</p>
+      </div>
+    </section>
+
+    <section class="account-section" aria-labelledby="account-requests-heading">
+      <div class="account-section-heading">
+        <div>
+          <p class="wishlist-label">MADE JUST FOR YOU</p>
+          <h2 id="account-requests-heading">Your custom ideas</h2>
+        </div>
+        <a href="custom.html" class="account-new-request">Share a new idea →</a>
+      </div>
+      <div id="account-custom-requests" class="account-list" aria-live="polite">
+        <p class="account-empty">Loading your ideas…</p>
+      </div>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+  <script src="api-config.js"></script>
+  <script src="api-client.js"></script>
+  <script src="backend-sync.js"></script>
+</body>
+</html>

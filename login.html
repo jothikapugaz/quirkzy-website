@@ -52,6 +52,21 @@
 
             <form id="login-form">
 
+                <!-- Name (registration only) -->
+
+                <label for="login-name" id="login-name-label" hidden>
+                    Name
+                </label>
+
+                <input
+                    type="text"
+                    id="login-name"
+                    placeholder="Your name"
+                    autocomplete="name"
+                    minlength="2"
+                    hidden
+                >
+
                 <!-- Email -->
 
                 <label for="login-email">
@@ -75,7 +90,9 @@
                 <input
                     type="password"
                     id="login-password"
-                    placeholder="Your password"
+                    placeholder="Your password (8+ characters)"
+                    autocomplete="current-password"
+                    minlength="8"
                     required
                 >
 
@@ -120,6 +137,9 @@
     <!-- JAVASCRIPT -->
 
     <script src="script.js"></script>
+<script src="api-config.js"></script>
+<script src="api-client.js"></script>
+<script src="backend-sync.js"></script>
 
 </body>
 

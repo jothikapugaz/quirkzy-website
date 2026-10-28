@@ -4681,3 +4681,283 @@ footer p {
     }
 
 }
+
+
+/* =========================================================
+   RESPONSIVE FINISHING PASS — mobile, tablet and desktop
+   ========================================================= */
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  scroll-padding-top: 1rem;
+}
+
+body {
+  min-width: 320px;
+  overflow-wrap: anywhere;
+}
+
+img, video, svg {
+  max-width: 100%;
+}
+
+button, input, select, textarea {
+  font: inherit;
+}
+
+button, a, input, select, textarea {
+  -webkit-tap-highlight-color: transparent;
+}
+
+button, a {
+  touch-action: manipulation;
+}
+
+:focus-visible {
+  outline: 3px solid #8b5cf6;
+  outline-offset: 3px;
+}
+
+input, select, textarea {
+  max-width: 100%;
+}
+
+.product-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.product-card,
+.product-info,
+.checkout-item,
+.custom-form-card,
+.login-card,
+.login-box {
+  min-width: 0;
+}
+
+.product-card img {
+  max-width: 100%;
+  object-fit: cover;
+}
+
+.custom-upload-box {
+  max-width: 100%;
+}
+
+@media (max-width: 1024px) {
+  .product-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 768px) {
+  .product-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: clamp(0.75rem, 2.5vw, 1.25rem);
+  }
+
+  .product-page {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .product-page-image,
+  .product-page-details {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .checkout-container {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .checkout-main,
+  .checkout-sidebar,
+  .checkout-summary,
+  .checkout-section {
+    min-width: 0;
+    width: 100%;
+  }
+
+  .custom-form-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .custom-form-grid .custom-field,
+  .custom-field {
+    min-width: 0;
+  }
+
+  .custom-form-grid input,
+  .custom-form-grid select,
+  .custom-form-grid textarea,
+  .custom-field input,
+  .custom-field select,
+  .custom-field textarea {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .checkout-header,
+  .custom-page-header {
+    gap: 0.75rem;
+  }
+
+  .cart-heading,
+  .wishlist-heading,
+  .custom-intro {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  .login-card,
+  .login-box,
+  .custom-success-box,
+  .order-success-box {
+    width: min(100% - 2rem, 34rem);
+    margin-inline: auto;
+  }
+
+  .nav-bottom {
+    flex-wrap: wrap;
+  }
+
+  .nav-links {
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+
+  .checkout-item {
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    gap: 0.75rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .product-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.65rem;
+  }
+
+  .product-card {
+    min-width: 0;
+  }
+
+  .product-info h3 {
+    overflow-wrap: anywhere;
+  }
+
+  .product-info button,
+  .product-actions button,
+  .place-order-button,
+  .custom-submit-button,
+  .login-button {
+    min-height: 44px;
+  }
+
+  .checkout-item {
+    grid-template-columns: 3.5rem minmax(0, 1fr);
+  }
+
+  .checkout-item-total {
+    grid-column: 2;
+  }
+
+  .payment-options {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .custom-form-heading {
+    align-items: flex-start;
+  }
+
+  .custom-upload-box {
+    padding: 1rem;
+  }
+
+  .nav-icons {
+    gap: 0.5rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+
+/* Account dashboard */
+.account-page {
+  width: min(100% - 2rem, 68rem);
+  margin: 0 auto;
+  padding: clamp(1rem, 4vw, 3rem) 0 4rem;
+}
+.account-header,
+.account-welcome,
+.account-section-heading,
+.account-list-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+.account-header { margin-bottom: clamp(2rem, 5vw, 4rem); }
+.account-logo { font-size: 1.6rem; font-weight: 800; text-decoration: none; color: inherit; }
+.account-shop-link, .account-new-request { text-decoration: none; }
+.account-welcome {
+  align-items: flex-start;
+  padding: clamp(1.25rem, 4vw, 2.5rem);
+  border-radius: 1.25rem;
+  background: var(--cream, #f7f1e9);
+  margin-bottom: 2rem;
+}
+.account-welcome h1 { margin: 0.3rem 0; }
+.account-email { overflow-wrap: anywhere; }
+.account-logout {
+  min-height: 44px;
+  padding: 0.7rem 1.1rem;
+  border: 1px solid currentColor;
+  border-radius: 999px;
+  background: transparent;
+  cursor: pointer;
+}
+.account-section {
+  padding: clamp(1rem, 3vw, 1.75rem);
+  margin: 1.25rem 0;
+  border: 1px solid rgba(60, 45, 35, 0.14);
+  border-radius: 1.1rem;
+}
+.account-section h2 { margin: 0.2rem 0 1rem; }
+.account-list { display: grid; gap: 0.8rem; }
+.account-list-card {
+  align-items: flex-start;
+  flex-wrap: wrap;
+  padding: 1rem;
+  border-radius: 0.8rem;
+  background: rgba(127, 105, 82, 0.07);
+}
+.account-list-card strong { overflow-wrap: anywhere; }
+.account-list-card p { flex-basis: 100%; margin: 0; }
+.account-status {
+  display: inline-flex;
+  padding: 0.25rem 0.65rem;
+  border-radius: 999px;
+  background: rgba(88, 113, 70, 0.13);
+  text-transform: capitalize;
+  font-size: 0.85rem;
+}
+.account-empty { opacity: 0.8; }
+@media (max-width: 600px) {
+  .account-welcome { flex-direction: column; }
+  .account-section-heading { align-items: flex-start; flex-direction: column; }
+  .account-list-card { flex-direction: column; }
+  .account-header { align-items: flex-start; }
+}

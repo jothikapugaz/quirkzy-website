@@ -436,16 +436,29 @@
                 place orders, and share your thoughts.
             </p>
 
+            <label for="login-name">Name</label>
             <input
                 type="text"
                 id="login-name"
                 placeholder="Your name"
+                autocomplete="name"
             >
 
+            <label for="login-email">Email</label>
             <input
                 type="email"
                 id="login-email"
                 placeholder="Your email"
+                autocomplete="email"
+            >
+
+            <label for="login-modal-password">Password</label>
+            <input
+                type="password"
+                id="login-modal-password"
+                placeholder="Create a password (8+ characters)"
+                autocomplete="new-password"
+                minlength="8"
             >
 
             <button id="login-button">
@@ -453,7 +466,7 @@
             </button>
 
             <p class="login-note">
-                Demo login for now — real authentication comes later.
+                Create an account with your email and a password. Already registered? Use the account page to sign in.
             </p>
 
         </div>
@@ -464,6 +477,9 @@
     <!-- JAVASCRIPT -->
 
     <script src="script.js"></script>
+<script src="api-config.js"></script>
+<script src="api-client.js"></script>
+<script src="backend-sync.js"></script>
 
 </body>
 
