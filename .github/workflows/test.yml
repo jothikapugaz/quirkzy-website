@@ -34,6 +34,11 @@ jobs:
         with:
           node-version: 24
       - run: npm install
+      - run: node --check server.js
+      - run: node --check lib/app.js
+      - run: node --check script.js
+      - run: node --check api-client.js
+      - run: node --check backend-sync.js
       - run: npm run db:migrate
       - run: npm run db:seed
       - run: npm test
