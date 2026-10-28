@@ -255,6 +255,40 @@
     }, true);
   }
 
+  // Refresh product details from PostgreSQL-backed catalogue data.
+  api.getProducts().then(({ products }) => {
+    if (!Array.isArray(products) || !products.length) return;
+    const mapped = products.map((product) => ({
+      ...product,
+      price: money(product.price)
+    }));
+    if (typeof quirkzyProducts !== "undefined" && Array.isArray(quirkzyProducts)) {
+      quirkzyProducts.splice(0, quirkzyProducts.length, ...mapped);
+    }
+    document.querySelectorAll("#shop .product-card").forEach((card) => {
+      const name = card.querySelector("h3")?.textContent.trim();
+      const product = products.find((item) => item.name === name);
+      if (!product) return;
+      const image = card.querySelector("img");
+      const price = card.querySelector(".product-info span");
+      if (image) { image.src = product.image; image.alt = product.name; }
+      if (price) price.textContent = money(product.price);
+      card.dataset.category = product.category;
+    });
+    const detailName = byId("product-name")?.textContent.trim();
+    const detailProduct = products.find((item) => item.name === detailName);
+    if (detailProduct) {
+      const image = byId("product-image");
+      if (image) { image.src = detailProduct.image; image.alt = detailProduct.name; }
+      if (byId("product-category")) byId("product-category").textContent = detailProduct.category.replace(/-/g, " ");
+      if (byId("product-name")) byId("product-name").textContent = detailProduct.name;
+      if (byId("product-price")) byId("product-price").textContent = money(detailProduct.price);
+      if (byId("product-description")) byId("product-description").textContent = detailProduct.description;
+      if (byId("product-dimensions")) byId("product-dimensions").textContent = detailProduct.dimensions;
+      if (byId("product-material")) byId("product-material").textContent = detailProduct.material;
+    }
+  }).catch((error) => console.warn("Catalogue API unavailable:", error.message));
+
   // Load authoritative product data where useful and report a visible backend issue on the health endpoint.
   api.request("/api/health").then((health) => {
     document.documentElement.dataset.apiStatus = health.status === "ok" ? "connected" : "disconnected";
