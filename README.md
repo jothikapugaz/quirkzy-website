@@ -86,15 +86,30 @@ Authenticated endpoints require an `Authorization: Bearer <token>` header.
 
 ## Tests
 
-The integration suite expects a migrated and seeded **disposable** test database. Point both `DATABASE_URL` and `TEST_DATABASE_URL` to that test database before running these commands. Never run tests against production data:
+The integration suite **requires a dedicated disposable test database** so it cannot accidentally write test orders or reduce stock in your development database.
 
-```bash
+1. Create a PostgreSQL database named `quirkzy_test`.
+2. Temporarily point both `DATABASE_URL` and `TEST_DATABASE_URL` to that database in your terminal environment.
+3. Apply migrations and seed products, then run the suite:
+
+   ```bash
+   npm run db:migrate
+   npm run db:seed
+   npm test
+   ```
+
+For Windows PowerShell, set the variables for the current terminal session before running the commands:
+
+```powershell
+$env:DATABASE_URL = "postgresql://postgres:YOUR_PASSWORD@localhost:5432/quirkzy_test"
+$env:TEST_DATABASE_URL = $env:DATABASE_URL
 npm run db:migrate
 npm run db:seed
 npm test
 ```
 
-Do not point integration tests at a production database. The suite creates and removes a test user and creates test orders/reviews.
+Restore your development `DATABASE_URL` after testing. Never point integration tests at a production database. The suite creates and removes a test user and creates test orders/reviews.
+
 
 ## Deployment
 
