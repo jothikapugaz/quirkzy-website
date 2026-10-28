@@ -4892,3 +4892,72 @@ input, select, textarea {
     scroll-behavior: auto !important;
   }
 }
+
+
+/* Account dashboard */
+.account-page {
+  width: min(100% - 2rem, 68rem);
+  margin: 0 auto;
+  padding: clamp(1rem, 4vw, 3rem) 0 4rem;
+}
+.account-header,
+.account-welcome,
+.account-section-heading,
+.account-list-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+.account-header { margin-bottom: clamp(2rem, 5vw, 4rem); }
+.account-logo { font-size: 1.6rem; font-weight: 800; text-decoration: none; color: inherit; }
+.account-shop-link, .account-new-request { text-decoration: none; }
+.account-welcome {
+  align-items: flex-start;
+  padding: clamp(1.25rem, 4vw, 2.5rem);
+  border-radius: 1.25rem;
+  background: var(--cream, #f7f1e9);
+  margin-bottom: 2rem;
+}
+.account-welcome h1 { margin: 0.3rem 0; }
+.account-email { overflow-wrap: anywhere; }
+.account-logout {
+  min-height: 44px;
+  padding: 0.7rem 1.1rem;
+  border: 1px solid currentColor;
+  border-radius: 999px;
+  background: transparent;
+  cursor: pointer;
+}
+.account-section {
+  padding: clamp(1rem, 3vw, 1.75rem);
+  margin: 1.25rem 0;
+  border: 1px solid rgba(60, 45, 35, 0.14);
+  border-radius: 1.1rem;
+}
+.account-section h2 { margin: 0.2rem 0 1rem; }
+.account-list { display: grid; gap: 0.8rem; }
+.account-list-card {
+  align-items: flex-start;
+  flex-wrap: wrap;
+  padding: 1rem;
+  border-radius: 0.8rem;
+  background: rgba(127, 105, 82, 0.07);
+}
+.account-list-card strong { overflow-wrap: anywhere; }
+.account-list-card p { flex-basis: 100%; margin: 0; }
+.account-status {
+  display: inline-flex;
+  padding: 0.25rem 0.65rem;
+  border-radius: 999px;
+  background: rgba(88, 113, 70, 0.13);
+  text-transform: capitalize;
+  font-size: 0.85rem;
+}
+.account-empty { opacity: 0.8; }
+@media (max-width: 600px) {
+  .account-welcome { flex-direction: column; }
+  .account-section-heading { align-items: flex-start; flex-direction: column; }
+  .account-list-card { flex-direction: column; }
+  .account-header { align-items: flex-start; }
+}
