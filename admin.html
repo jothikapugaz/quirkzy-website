@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex,nofollow">
+  <meta name="description" content="Quirkzy store administration.">
+  <title>Quirkzy — Store Admin</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="admin-body">
+  <main class="admin-shell">
+    <header class="admin-header">
+      <a class="admin-brand" href="index.html">QUIRKZY <span>STORE ADMIN</span></a>
+      <div class="admin-header-actions">
+        <a href="index.html">View storefront ↗</a>
+        <button id="admin-logout" class="admin-secondary" type="button" hidden>Sign out</button>
+      </div>
+    </header>
+
+    <section id="admin-login-panel" class="admin-login-panel">
+      <p class="admin-eyebrow">PRIVATE STORE MANAGEMENT</p>
+      <h1>Welcome back.</h1>
+      <p>Sign in with an administrator account created by the store owner.</p>
+      <form id="admin-login-form" class="admin-form">
+        <label for="admin-email">Administrator email</label>
+        <input id="admin-email" name="email" type="email" autocomplete="username" required>
+        <label for="admin-password">Password</label>
+        <input id="admin-password" name="password" type="password" autocomplete="current-password" required>
+        <p id="admin-login-message" class="admin-message" role="status"></p>
+        <button type="submit" class="admin-primary">Sign in to admin →</button>
+      </form>
+      <p class="admin-security-note">Admin access is verified by the server. A customer account cannot open this dashboard.</p>
+    </section>
+
+    <section id="admin-dashboard" hidden>
+      <div class="admin-welcome">
+        <div><p class="admin-eyebrow">STORE OVERVIEW</p><h1>Good to see you, <span id="admin-name">Admin</span>.</h1></div>
+        <p id="admin-status" role="status">Loading store data…</p>
+      </div>
+      <div id="admin-metrics" class="admin-metrics"></div>
+      <nav class="admin-tabs" aria-label="Admin sections">
+        <button type="button" class="admin-tab active" data-panel="products">Products & stock</button>
+        <button type="button" class="admin-tab" data-panel="orders">Orders</button>
+        <button type="button" class="admin-tab" data-panel="requests">Custom requests</button>
+        <button type="button" class="admin-tab" data-panel="customers">Customers</button>
+      </nav>
+
+      <section class="admin-panel" id="panel-products">
+        <div class="admin-panel-heading"><div><p class="admin-eyebrow">CATALOGUE</p><h2>Products & inventory</h2></div></div>
+        <form id="admin-product-form" class="admin-product-form">
+          <label>Product name<input name="name" required minlength="2" maxlength="160"></label>
+          <label>Price (₹)<input name="price" type="number" min="0" step="1" required></label>
+          <label>Initial stock<input name="stock" type="number" min="0" max="100000" step="1" value="10" required></label>
+          <label>Category<input name="category" required maxlength="80" placeholder="home-decor"></label>
+          <label>Image path or HTTPS URL<input name="image" required placeholder="assets/your-product.png"></label>
+          <label class="admin-field-wide">Description<textarea name="description" rows="2" maxlength="5000"></textarea></label>
+          <label>Dimensions<input name="dimensions" maxlength="160"></label>
+          <label>Material<input name="material" maxlength="160"></label>
+          <button type="submit" class="admin-primary">Add product</button>
+          <p id="admin-product-message" class="admin-message" role="status"></p>
+        </form>
+        <div id="admin-products-table" class="admin-table-wrap"></div>
+      </section>
+
+      <section class="admin-panel" id="panel-orders" hidden>
+        <div class="admin-panel-heading"><div><p class="admin-eyebrow">FULFILMENT</p><h2>Customer orders</h2></div><button type="button" class="admin-secondary" data-refresh="orders">Refresh</button></div>
+        <div id="admin-orders-table" class="admin-table-wrap"></div>
+      </section>
+
+      <section class="admin-panel" id="panel-requests" hidden>
+        <div class="admin-panel-heading"><div><p class="admin-eyebrow">MADE JUST FOR YOU</p><h2>Custom requests</h2></div><button type="button" class="admin-secondary" data-refresh="requests">Refresh</button></div>
+        <div id="admin-requests-table" class="admin-table-wrap"></div>
+      </section>
+
+      <section class="admin-panel" id="panel-customers" hidden>
+        <div class="admin-panel-heading"><div><p class="admin-eyebrow">COMMUNITY</p><h2>Customers</h2></div><button type="button" class="admin-secondary" data-refresh="customers">Refresh</button></div>
+        <div id="admin-customers-table" class="admin-table-wrap"></div>
+      </section>
+      <p class="admin-footnote">Store management is private. Do not share administrator credentials. Payment collection is not enabled until a payment provider is configured.</p>
+    </section>
+  </main>
+  <script src="api-config.js"></script>
+  <script src="api-client.js"></script>
+  <script src="admin.js"></script>
+</body>
+</html>
