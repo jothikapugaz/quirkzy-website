@@ -289,6 +289,74 @@
     }
   }).catch((error) => console.warn("Catalogue API unavailable:", error.message));
 
+  // Account dashboard: show only the signed-in user's own orders and custom requests.
+  if (byId("account-orders") && byId("account-custom-requests")) {
+    if (!api.isSignedIn()) {
+      window.location.replace("login.html");
+    } else {
+      Promise.all([api.refreshSession(), api.getOrders(), api.getCustomRequests()]).then(([user, ordersResult, requestsResult]) => {
+        if (byId("account-name")) byId("account-name").textContent = user.name;
+        if (byId("account-email")) byId("account-email").textContent = user.email;
+        const ordersRoot = byId("account-orders");
+        ordersRoot.replaceChildren();
+        const orders = ordersResult.orders || [];
+        if (!orders.length) {
+          const empty = document.createElement("p");
+          empty.className = "account-empty";
+          empty.textContent = "No orders yet. Your next little quirk is waiting in the shop.";
+          ordersRoot.appendChild(empty);
+        }
+        for (const order of orders) {
+          const card = document.createElement("article");
+          card.className = "account-list-card";
+          const title = document.createElement("strong");
+          title.textContent = order.order_number;
+          const status = document.createElement("span");
+          status.className = "account-status";
+          status.textContent = String(order.status || "placed").replace(/-/g, " ");
+          const meta = document.createElement("p");
+          meta.textContent = new Date(order.created_at).toLocaleDateString() + " · " + money(order.total) + " · Payment: " + String(order.payment_status || "pending").replace(/-/g, " ");
+          card.append(title, status, meta);
+          ordersRoot.appendChild(card);
+        }
+        const requestsRoot = byId("account-custom-requests");
+        requestsRoot.replaceChildren();
+        const requests = requestsResult.requests || [];
+        if (!requests.length) {
+          const empty = document.createElement("p");
+          empty.className = "account-empty";
+          empty.textContent = "No custom ideas submitted yet. Tell us what you imagine.";
+          requestsRoot.appendChild(empty);
+        }
+        for (const idea of requests) {
+          const card = document.createElement("article");
+          card.className = "account-list-card";
+          const title = document.createElement("strong");
+          title.textContent = idea.title;
+          const status = document.createElement("span");
+          status.className = "account-status";
+          status.textContent = String(idea.status || "received").replace(/-/g, " ");
+          const meta = document.createElement("p");
+          meta.textContent = idea.category.replace(/-/g, " ") + " · Quantity: " + idea.quantity + " · " + new Date(idea.created_at).toLocaleDateString();
+          card.append(title, status, meta);
+          requestsRoot.appendChild(card);
+        }
+      }).catch((error) => {
+        notify(error.message);
+        window.location.replace("login.html");
+      });
+    }
+  }
+
+  document.addEventListener("click", async (event) => {
+    const button = event.target.closest("#logout-button");
+    if (!button) return;
+    event.preventDefault();
+    event.stopImmediatePropagation();
+    await api.logout();
+    window.location.href = "login.html";
+  }, true);
+
   // Load authoritative product data where useful and report a visible backend issue on the health endpoint.
   api.request("/api/health").then((health) => {
     document.documentElement.dataset.apiStatus = health.status === "ok" ? "connected" : "disconnected";
