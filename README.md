@@ -1,130 +1,60 @@
 # Quirkzy — Weird & Wonderful
 
-Quirkzy is a playful, responsive e-commerce portfolio project for quirky home, desk, and décor products. The multi-page frontend is connected to a Node.js/Express API and PostgreSQL database for local full-stack use.
+Quirkzy is a playful e-commerce storefront concept for distinctive home, desk, and décor products. The experience pairs a warm, characterful storefront with customer accounts and store-management workflows while retaining the original Quirkzy product photography, descriptions, and visual identity.
 
-**Live frontend (static demo):** https://jothikapugaz.github.io/quirkzy-website/
+**Live storefront preview:** https://jothikapugaz.github.io/quirkzy-website/
 
-> The GitHub Pages URL hosts only static files. Full account, cart, review, custom-request, and order persistence requires the API and PostgreSQL database to be deployed and the API URL configured in `api-config.js`. No real payment is collected.
+> **Preview status:** The public GitHub Pages URL serves the browser-based storefront demo. The full API and database are implemented in the project code but are not yet connected to a deployed production service. The preview does not collect real payments.
 
-## Features
+## Experience highlights
 
-- Responsive home, product, cart, wishlist, account history, login, checkout, and custom-request pages
-- Product catalogue with category/search API support
-- Express REST API and PostgreSQL persistence
-- Password-hashed accounts and signed JWT sessions
-- Server-persisted carts and wishlists for signed-in users
-- Account dashboard with personal order and custom-request history
-- Product reviews with server-side validation
-- Checkout orders with server-calculated prices and totals
-- Custom product requests
-- Database migrations and repeatable catalogue seeding
-- Automated API/database integration tests and GitHub Actions CI
+### Customer storefront
+- Product browsing, category filtering, product details, and product reviews
+- Shopping bag, quantity controls, wishlist, and checkout flow
+- Customer registration, sign-in, and sign-out
+- Personal order history and custom-product request tracking
+- Responsive layouts for mobile, tablet, and desktop
 
-## Stack
+### Store operations
+- Separate administrator sign-in with server-verified roles
+- Product catalogue management and stock updates
+- Order overview and fulfilment-status management
+- Customer overview and custom-request status tracking
+- Order cancellation inventory restoration and server-calculated checkout totals
 
-- Frontend: HTML5, CSS3, vanilla JavaScript
-- Backend: Node.js, Express
-- Database: PostgreSQL
-- Security: bcrypt password hashing, JWT authentication, Helmet, rate limiting, parameterized SQL
-- Testing: Node.js test runner, Supertest, PostgreSQL service in GitHub Actions
-- Deployment blueprint: Render (`render.yaml`)
+### Engineering
+- HTML, CSS, and vanilla JavaScript frontend
+- Node.js and Express REST API
+- PostgreSQL schema and repeatable migrations
+- Password hashing, signed sessions, parameterized queries, rate limiting, and server-side authorization
+- Automated API/database integration tests in GitHub Actions
 
-## Run locally
+## Application structure
 
-Requirements: Node.js 20+, PostgreSQL 15+.
+- `index.html`, `product.html`, `cart.html`, `wishlist.html`, `checkout.html` — storefront and shopping flow
+- `login.html`, `account.html` — customer identity and account history
+- `admin.html`, `admin.js` — private store-management interface
+- `server.js`, `lib/app.js` — API server and route handlers
+- `migrations/` — database schema changes
+- `scripts/` — catalogue seeding, migration, and owner-controlled admin provisioning
+- `tests/` — automated integration tests
 
-1. Clone the repository and install dependencies:
+## Production deployment status
 
-   ```bash
-   npm install
-   ```
+The codebase is being prepared for a complete hosted shopping experience. Before accepting real customer orders, the deployment still needs:
 
-2. Create a PostgreSQL database named `quirkzy`, then copy `.env.example` to `.env` and update `DATABASE_URL`. Set `JWT_SECRET` to a random secret of at least 32 characters. Never commit `.env`.
+- A hosted Node.js API and PostgreSQL database
+- A verified payment-provider integration and signed webhook handling
+- Production API configuration and HTTPS on the storefront
+- Object storage for custom-request reference images
+- Email notifications, operational monitoring, and automated database backups
+- Store policies, privacy disclosures, and end-to-end testing against the production environment
+- A custom domain, if desired
 
-3. Create the tables and seed the catalogue:
+**Payments:** The current checkout records an order and a pending payment status; it does not charge cards or UPI. Do not represent the preview as accepting online payments until the payment provider and webhook verification are configured.
 
-   ```bash
-   npm run db:migrate
-   npm run db:seed
-   ```
+**Reference images:** The current custom-request API records selected image metadata, not uploaded image files. Production uploads require secured object storage.
 
-4. Start the app:
+## Live preview
 
-   ```bash
-   npm run dev
-   ```
-
-5. Open http://localhost:3000. Check http://localhost:3000/api/health; a healthy response is `{"status":"ok","database":"connected"}`.
-
-## Environment variables
-
-| Variable | Purpose |
-|---|---|
-| `DATABASE_URL` | PostgreSQL connection string |
-| `JWT_SECRET` | Secret used to sign authentication tokens (minimum 32 characters) |
-| `PORT` | Server port; defaults to 3000 |
-| `FRONTEND_ORIGIN` | Optional frontend origin allowed by CORS |
-| `DATABASE_SSL` | Set to `true` for hosted databases that require TLS |
-| `DB_POOL_MAX` | Optional PostgreSQL pool size; defaults to 10 |
-
-## Main API routes
-
-| Method | Route | Purpose |
-|---|---|---|
-| GET | `/api/health` | API/database health |
-| GET | `/api/products` | Product catalogue, optional `search` and `category` |
-| POST | `/api/auth/register` | Create account |
-| POST | `/api/auth/login` | Sign in |
-| GET | `/api/auth/me` | Validate current session |
-| GET / PUT | `/api/cart` | Read/save signed-in cart |
-| GET / POST / DELETE | `/api/wishlist` and `/api/wishlist/:slug` | Wishlist operations |
-| GET / POST | `/api/products/:slug/reviews` | Read/add a product review |
-| GET / POST | `/api/orders` | Read order history / place an order |
-| GET / POST | `/api/custom-requests` | Read / submit custom product requests |
-
-Authenticated endpoints require an `Authorization: Bearer <token>` header.
-
-## Tests
-
-The integration suite **requires a dedicated disposable test database** so it cannot accidentally write test orders or reduce stock in your development database.
-
-1. Create a PostgreSQL database named `quirkzy_test`.
-2. Temporarily point both `DATABASE_URL` and `TEST_DATABASE_URL` to that database in your terminal environment.
-3. Apply migrations and seed products, then run the suite:
-
-   ```bash
-   npm run db:migrate
-   npm run db:seed
-   npm test
-   ```
-
-For Windows PowerShell, set the variables for the current terminal session before running the commands:
-
-```powershell
-$env:DATABASE_URL = "postgresql://postgres:YOUR_PASSWORD@localhost:5432/quirkzy_test"
-$env:TEST_DATABASE_URL = $env:DATABASE_URL
-npm run db:migrate
-npm run db:seed
-npm test
-```
-
-Restore your development `DATABASE_URL` after testing. Never point integration tests at a production database. The suite creates and removes a test user and creates test orders/reviews.
-
-
-## Deployment
-
-- Deploy the API and PostgreSQL database using a host that supports Node.js and PostgreSQL. `render.yaml` provides a starting blueprint.
-- Configure the service's `DATABASE_URL`, `JWT_SECRET`, and `DATABASE_SSL` variables.
-- Run `npm run db:migrate` and `npm run db:seed` against the hosted database.
-- For a separately hosted GitHub Pages frontend, set `window.QUIRKZY_API_BASE` in `api-config.js` to the deployed API origin and ensure that origin is permitted by the API's CORS policy.
-- Re-run the mobile and desktop shopping flow after deployment.
-
-## Important limitations
-
-- The current online-payment choice is a demo only; it does not charge a card or UPI account. Use a payment provider and verified webhook flow before accepting real payments.
-- Reference images selected on the custom-request form are currently recorded as filenames/metadata; production image storage requires an object-storage service.
-- This is a portfolio project, not a production store. Before real customers use it, add a verified payment integration, email notifications, monitoring, backups, and a privacy policy/terms.
-
-## Author
-
-Jothika P
+The public preview is useful for reviewing the existing Quirkzy brand, product presentation, and storefront flow. Customer account persistence, administrator operations, and database-backed catalogue updates become available when the frontend is connected to the deployed API.
