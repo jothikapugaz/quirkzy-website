@@ -103,9 +103,66 @@
       event.preventDefault();
       event.stopImmediatePropagation();
       localStorage.removeItem("quirkzyUser");
+      localStorage.removeItem("quirkzyToken");
       window.location.href = "login.html";
     }, true);
     return;
+  }
+
+  // Customer account: load the authenticated user's complete order and custom-request history.
+  if (byId("account-orders") && byId("account-custom-requests")) {
+    const ordersRoot = byId("account-orders");
+    const requestsRoot = byId("account-custom-requests");
+    const logout = byId("logout-button");
+    if (!api.isSignedIn()) {
+      window.location.replace("login.html");
+    } else {
+      Promise.all([api.refreshSession(), api.getOrders(), api.getCustomRequests()])
+        .then(([user, orderResult, requestResult]) => {
+          if (byId("account-name")) byId("account-name").textContent = user.name || "Quirkzy friend";
+          if (byId("account-email")) byId("account-email").textContent = user.email || "";
+          ordersRoot.replaceChildren();
+          const orders = orderResult.orders || [];
+          if (!orders.length) ordersRoot.appendChild(el("p", "Your first little haul will appear here after you place an order.", "account-empty"));
+          for (const order of orders) {
+            const card = el("article", undefined, "account-order-card");
+            const heading = el("div", undefined, "account-order-heading");
+            const title = el("div"); title.append(el("strong", order.order_number), el("small", dateLabel(order.created_at)));
+            heading.append(title, el("span", String(order.status || "placed").replace(/-/g, " "), "account-order-status"));
+            card.appendChild(heading);
+            const items = el("ul", undefined, "account-order-items");
+            (order.items || []).forEach((item) => items.appendChild(el("li", item.name + " × " + item.quantity + " · " + money(Number(item.price) * Number(item.quantity)))));
+            card.appendChild(items);
+            const summary = el("p", "Subtotal " + money(order.subtotal) + " · Shipping " + money(order.shipping) + " · Total " + money(order.total), "account-order-total");
+            card.appendChild(summary);
+            card.appendChild(el("small", "Payment: " + (order.payment_method || "—") + " · " + (order.payment_status || "pending"), "account-order-payment"));
+            ordersRoot.appendChild(card);
+          }
+          requestsRoot.replaceChildren();
+          const requests = requestResult.requests || [];
+          if (!requests.length) requestsRoot.appendChild(el("p", "Your custom ideas and their progress will appear here.", "account-empty"));
+          for (const request of requests) {
+            const card = el("article", undefined, "account-request-card");
+            card.append(el("strong", request.title), el("p", request.category + " · Quantity " + request.quantity), el("span", request.status, "account-order-status"), el("small", dateLabel(request.created_at)));
+            requestsRoot.appendChild(card);
+          }
+        })
+        .catch((error) => {
+          ordersRoot.replaceChildren(el("p", error.message + " Please sign in again.", "account-empty"));
+          requestsRoot.replaceChildren();
+          if (error.message.toLowerCase().includes("session") || error.message.toLowerCase().includes("sign in")) {
+            api.logout();
+            window.location.replace("login.html");
+          }
+        });
+    }
+    if (logout) logout.addEventListener("click", async () => {
+      await api.logout();
+      window.location.replace("login.html");
+    });
+  }
+  function dateLabel(value) {
+    return value ? new Date(value).toLocaleDateString("en-IN", { year:"numeric", month:"short", day:"numeric" }) : "Date unavailable";
   }
 
   // The database is the catalogue source of truth whenever the API is available.
