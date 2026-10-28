@@ -76,6 +76,12 @@
       const serverWishlist = await request("/api/wishlist").catch(() => ({ items: [] }));
       if (serverWishlist.items.length) {
         localStorage.setItem("quirkzyWishlist", JSON.stringify(serverWishlist.items.map((item) => ({ name:item.name, slug:item.slug, price:"₹"+item.price, image:item.image, category:item.category }))));
+      } else {
+        let localWishlist = [];
+        try { localWishlist = JSON.parse(localStorage.getItem("quirkzyWishlist") || "[]"); } catch {}
+        for (const item of localWishlist) {
+          await request("/api/wishlist/" + encodeURIComponent(item.slug || slugify(item.name)), { method:"POST" }).catch(() => {});
+        }
       }
       return result.user;
     },
